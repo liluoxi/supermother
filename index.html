@@ -6,7 +6,7 @@
   <title>超人妈妈 | 第一个母亲节礼物</title>
   <meta
     name="description"
-    content="献给世界上最棒的妈妈，一份可以通过二维码打开的温馨母亲节礼物。"
+    content="送给新手妈妈的第一个母亲节礼物，一页打开就是完整心意。"
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,16 +19,17 @@
   <style>
     :root {
       --pink: #ffb6c1;
+      --pink-deep: #f08cab;
       --gold: #ffd700;
-      --blush: #ffe4e1;
+      --gold-soft: #ffe9a8;
       --bg: #fff9f9;
-      --rose: #f48ca7;
-      --text: #5c4a4a;
-      --muted: #8f7377;
       --card: rgba(255, 255, 255, 0.84);
-      --shadow: 0 20px 40px rgba(244, 140, 167, 0.18);
-      --radius: 24px;
-      --nav-height: 72px;
+      --text: #5f4a4a;
+      --muted: #8f7477;
+      --line: rgba(255, 182, 193, 0.28);
+      --shadow: 0 20px 50px rgba(240, 140, 171, 0.16);
+      --radius: 28px;
+      --nav-h: 74px;
     }
 
     * {
@@ -41,12 +42,12 @@
 
     body {
       margin: 0;
-      font-family: "Open Sans", sans-serif;
       color: var(--text);
+      font-family: "Open Sans", sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(255, 214, 221, 0.65), transparent 28%),
-        radial-gradient(circle at top right, rgba(255, 232, 160, 0.45), transparent 24%),
-        linear-gradient(180deg, #fff9f9 0%, #fff6f7 40%, #fffdfa 100%);
+        radial-gradient(circle at top left, rgba(255, 213, 220, 0.7), transparent 30%),
+        radial-gradient(circle at 90% 15%, rgba(255, 215, 0, 0.16), transparent 20%),
+        linear-gradient(180deg, #fff9f9 0%, #fff7f7 45%, #fffdf9 100%);
       overflow-x: hidden;
     }
 
@@ -54,38 +55,33 @@
     body::after {
       content: "";
       position: fixed;
-      width: 240px;
-      height: 240px;
-      border-radius: 50%;
       z-index: -1;
-      opacity: 0.45;
-      filter: blur(16px);
-      transform: translate3d(0, 0, 0);
-      transition: transform 0.2s linear;
+      border-radius: 50%;
+      filter: blur(18px);
+      opacity: 0.35;
     }
 
     body::before {
-      top: -60px;
-      left: -60px;
-      background: rgba(255, 182, 193, 0.65);
+      width: 260px;
+      height: 260px;
+      top: -80px;
+      left: -80px;
+      background: rgba(255, 182, 193, 0.72);
     }
 
     body::after {
-      right: -80px;
-      top: 18vh;
-      background: rgba(255, 215, 0, 0.32);
+      width: 220px;
+      height: 220px;
+      top: 24vh;
+      right: -70px;
+      background: rgba(255, 215, 0, 0.24);
     }
 
     img,
     video {
-      max-width: 100%;
       display: block;
-      border-radius: 20px;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
+      max-width: 100%;
+      border-radius: 22px;
     }
 
     button,
@@ -99,10 +95,15 @@
       cursor: pointer;
     }
 
-    .page-shell {
-      width: min(1160px, calc(100% - 32px));
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 28px));
       margin: 0 auto;
-      padding-bottom: calc(var(--nav-height) + 28px);
+      padding-bottom: calc(var(--nav-h) + 34px);
     }
 
     .hero {
@@ -110,11 +111,11 @@
       display: grid;
       place-items: center;
       text-align: center;
+      padding: 48px 20px 96px;
       position: relative;
       overflow: hidden;
-      padding: 48px 20px 96px;
       background: linear-gradient(160deg, #ffb6c1 0%, #ffe4e1 100%);
-      border-radius: 0 0 40px 40px;
+      border-radius: 0 0 42px 42px;
     }
 
     .hero::before,
@@ -122,38 +123,39 @@
       content: "";
       position: absolute;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.2);
       animation: drift 12s ease-in-out infinite;
     }
 
     .hero::before {
-      width: 240px;
-      height: 240px;
-      top: 10%;
-      left: -60px;
+      width: 260px;
+      height: 260px;
+      left: -70px;
+      top: 12%;
     }
 
     .hero::after {
       width: 180px;
       height: 180px;
-      bottom: 14%;
       right: -30px;
+      bottom: 12%;
       animation-delay: -4s;
     }
 
     .hero-inner {
-      max-width: 720px;
       position: relative;
       z-index: 1;
+      max-width: 760px;
     }
 
     .eyebrow,
     .hero h1,
     .hero p,
-    .hero-signoff,
+    .hero-sign,
+    .hero-date,
     .scroll-cue {
       opacity: 0;
-      transform: translateY(18px);
+      transform: translateY(20px);
       animation: fadeUp 0.8s ease forwards;
     }
 
@@ -162,244 +164,166 @@
       padding: 10px 18px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.28);
-      color: #fffafc;
+      color: #fff;
+      font-size: 0.92rem;
       letter-spacing: 0.08em;
-      font-size: 0.9rem;
       animation-delay: 0.1s;
     }
 
     .hero h1 {
       margin: 22px 0 14px;
-      color: #ffffff;
+      color: #fff;
       font-family: "Dancing Script", cursive;
-      font-size: clamp(2.8rem, 8vw, 5rem);
-      line-height: 1.06;
-      animation-delay: 0.3s;
+      font-size: clamp(3rem, 8vw, 5.4rem);
+      line-height: 1.02;
+      animation-delay: 0.28s;
     }
 
     .hero p {
       margin: 0 auto;
-      max-width: 600px;
-      font-size: clamp(1rem, 3vw, 1.22rem);
-      line-height: 1.8;
+      max-width: 640px;
       color: rgba(255, 255, 255, 0.94);
-      animation-delay: 0.5s;
+      line-height: 1.85;
+      font-size: clamp(1rem, 2.8vw, 1.2rem);
+      animation-delay: 0.44s;
     }
 
-    .hero-signoff {
-      margin-top: 30px;
+    .hero-date {
+      margin-top: 22px;
+      color: rgba(255, 255, 255, 0.92);
+      font-weight: 700;
+      animation-delay: 0.6s;
+    }
+
+    .hero-sign {
+      margin-top: 16px;
       color: #fff;
       font-weight: 700;
-      animation-delay: 0.7s;
+      animation-delay: 0.76s;
     }
 
     .scroll-cue {
       position: absolute;
-      bottom: 26px;
       left: 50%;
+      bottom: 24px;
       transform: translateX(-50%);
-      color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
-      animation-delay: 0.9s;
+      color: #fff;
+      animation-delay: 0.92s;
     }
 
-    .scroll-cue span:last-child {
+    .scroll-cue i {
       width: 16px;
       height: 16px;
       border-right: 3px solid #fff;
       border-bottom: 3px solid #fff;
       transform: rotate(45deg);
-      animation: bounce 1.7s infinite;
+      animation: bounce 1.6s infinite;
     }
 
     .section {
-      padding: 72px 0 12px;
-      position: relative;
+      padding: 74px 0 10px;
     }
 
-    .section-header {
+    .section-head {
       text-align: center;
-      margin-bottom: 28px;
+      margin-bottom: 26px;
     }
 
-    .section-header .tag {
+    .tag {
       display: inline-block;
       padding: 8px 14px;
       border-radius: 999px;
       background: rgba(255, 182, 193, 0.18);
-      color: var(--rose);
+      color: var(--pink-deep);
+      font-size: 0.92rem;
       font-weight: 700;
-      margin-bottom: 12px;
     }
 
-    .section-header h2 {
-      margin: 0 0 12px;
+    .section-head h2 {
+      margin: 12px 0 10px;
+      color: #d06f8c;
       font-family: "Dancing Script", cursive;
-      font-size: clamp(2.1rem, 6vw, 3.2rem);
-      color: #d56d8b;
+      font-size: clamp(2.2rem, 6vw, 3.3rem);
     }
 
-    .section-header p {
-      max-width: 760px;
+    .section-head p {
       margin: 0 auto;
+      max-width: 760px;
       color: var(--muted);
-      line-height: 1.8;
+      line-height: 1.85;
     }
 
     .card {
       background: var(--card);
-      border: 1px solid rgba(255, 182, 193, 0.26);
+      border: 1px solid var(--line);
       border-radius: var(--radius);
+      backdrop-filter: blur(14px);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
     }
 
-    .editor-wrap {
+    .story-banner {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 22px;
-      align-items: start;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      padding: 22px;
+      align-items: stretch;
     }
 
-    .editor-panel,
-    .publish-panel {
-      padding: 26px;
+    .story-photo {
+      min-height: 320px;
+      overflow: hidden;
+      position: relative;
+      border-radius: 26px;
     }
 
-    .editor-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .field,
-    .upload-field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .field label,
-    .upload-field label {
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: #8f5e6f;
-    }
-
-    .field input,
-    .field textarea,
-    .upload-field input {
+    .story-photo img {
       width: 100%;
-      border: 1px solid rgba(255, 182, 193, 0.34);
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 16px;
-      padding: 13px 14px;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.03);
     }
 
-    .field textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-
-    .field input:focus,
-    .field textarea:focus,
-    .upload-field input:focus {
-      border-color: var(--rose);
-      box-shadow: 0 0 0 4px rgba(244, 140, 167, 0.14);
-    }
-
-    .editor-actions,
-    .publish-actions,
-    .generator-actions,
-    .wish-actions,
-    .message-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .btn {
-      padding: 12px 18px;
-      border-radius: 999px;
-      font-weight: 700;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px rgba(244, 140, 167, 0.2);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--rose), #f8a5b9);
-      color: #fff;
-    }
-
-    .btn-secondary {
-      background: linear-gradient(135deg, #ffd86f, #ffefa9);
-      color: #7a5a00;
-    }
-
-    .btn-light {
-      background: rgba(255, 255, 255, 0.92);
-      color: #b06379;
-      border: 1px solid rgba(255, 182, 193, 0.28);
-    }
-
-    .hint {
-      margin: 12px 0 0;
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.7;
-    }
-
-    .status {
-      margin-top: 12px;
-      min-height: 24px;
-      color: #cc5a7a;
-      font-weight: 700;
-    }
-
-    .publish-output {
-      margin-top: 18px;
-      padding: 16px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.82);
-      border: 1px dashed rgba(255, 182, 193, 0.45);
-      word-break: break-all;
-    }
-
-    .publish-output a {
-      color: #ba5673;
-    }
-
-    .qrcode-box {
-      margin-top: 16px;
-      min-height: 140px;
+    .story-copy {
       display: grid;
-      place-items: center;
-      border-radius: 20px;
-      background: rgba(255, 249, 249, 0.72);
-      padding: 12px;
+      gap: 16px;
+      align-content: center;
+      padding: 12px 6px;
     }
 
-    .timeline-layout {
+    .story-copy h3 {
+      margin: 0;
+      color: #a95a72;
+      font-size: 1.5rem;
+    }
+
+    .story-copy p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .mini-quote {
+      padding: 16px 18px;
+      border-radius: 20px;
+      background: rgba(255, 249, 249, 0.92);
+      border-left: 4px solid var(--gold);
+      line-height: 1.8;
+    }
+
+    .timeline-wrap {
       display: grid;
       grid-template-columns: minmax(0, 1fr) 160px;
-      gap: 20px;
+      gap: 18px;
       align-items: start;
     }
 
     .timeline {
       position: relative;
-      padding-left: 28px;
+      padding-left: 30px;
     }
 
     .timeline::before {
@@ -409,35 +333,35 @@
       top: 0;
       bottom: 0;
       width: 4px;
-      background: linear-gradient(180deg, rgba(255, 182, 193, 0.85), rgba(255, 215, 0, 0.35));
       border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255, 182, 193, 0.92), rgba(255, 215, 0, 0.32));
     }
 
     .timeline-item {
       position: relative;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
       opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
     }
 
-    .timeline-item.revealed {
+    .timeline-item.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    .timeline-dot {
+    .dot {
       position: absolute;
-      left: -26px;
-      top: 26px;
+      left: -28px;
+      top: 28px;
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--rose), var(--gold));
-      box-shadow: 0 0 0 6px rgba(255, 182, 193, 0.16);
+      background: linear-gradient(135deg, var(--pink-deep), var(--gold));
+      box-shadow: 0 0 0 6px rgba(255, 182, 193, 0.14);
     }
 
-    .timeline-card {
+    .timeline-box {
       overflow: hidden;
     }
 
@@ -452,92 +376,93 @@
       text-align: left;
     }
 
-    .timeline-icon {
+    .icon {
       width: 48px;
       height: 48px;
       display: grid;
       place-items: center;
       border-radius: 16px;
-      background: rgba(255, 182, 193, 0.16);
+      background: rgba(255, 182, 193, 0.14);
       font-size: 1.4rem;
     }
 
-    .timeline-title {
+    .timeline-toggle h3 {
       margin: 0;
+      color: #935168;
       font-size: 1.08rem;
-      color: #8f4d64;
     }
 
-    .timeline-date {
+    .timeline-toggle small {
+      display: block;
       margin-top: 4px;
-      font-size: 0.9rem;
       color: var(--muted);
     }
 
-    .timeline-arrow {
-      color: #d87292;
-      font-size: 1.3rem;
+    .arrow {
+      color: #d07390;
+      font-size: 1.28rem;
       transition: transform 0.25s ease;
     }
 
-    .timeline-item.open .timeline-arrow {
+    .timeline-item.open .arrow {
       transform: rotate(180deg);
     }
 
     .timeline-body {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.35s ease;
+      transition: max-height 0.36s ease;
     }
 
-    .timeline-body-inner {
+    .timeline-inner {
       padding: 0 22px 22px;
       display: grid;
       gap: 14px;
     }
 
-    .timeline-copy {
+    .timeline-media {
+      overflow: hidden;
+      border-radius: 22px;
+      position: relative;
+      background: #f6d7de;
+    }
+
+    .timeline-media img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+    }
+
+    .timeline-body p {
+      margin: 0;
       color: var(--muted);
-      line-height: 1.8;
+      line-height: 1.86;
     }
 
-    .narration {
-      padding: 16px 18px;
-      border-radius: 18px;
-      background: rgba(255, 249, 249, 0.9);
-      border-left: 4px solid var(--gold);
-      line-height: 1.8;
-    }
-
-    .media-stack {
-      display: grid;
-      gap: 12px;
-    }
-
-    .aside-indicator {
+    .year-box {
       position: sticky;
       top: 96px;
       padding: 18px;
       text-align: center;
     }
 
-    .aside-indicator strong {
+    .year-box strong {
       display: block;
+      color: #c86381;
       font-size: 2rem;
-      color: #c76381;
     }
 
-    .aside-indicator span {
+    .year-box span {
       color: var(--muted);
     }
 
-    .messages-layout {
+    .message-layout {
       display: grid;
       grid-template-columns: 240px minmax(0, 1fr);
       gap: 18px;
     }
 
-    .tabs {
+    .tab-list {
       padding: 18px;
       display: grid;
       gap: 12px;
@@ -545,23 +470,25 @@
     }
 
     .tab-btn {
-      text-align: left;
-      border-radius: 18px;
       padding: 14px 16px;
-      background: rgba(255, 255, 255, 0.74);
-      color: #ab6279;
+      border-radius: 18px;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.8);
+      color: #ab6278;
       font-weight: 700;
+      transition: transform 0.2s ease, background 0.2s ease;
     }
 
     .tab-btn.active {
-      background: linear-gradient(135deg, rgba(255, 182, 193, 0.95), rgba(255, 228, 225, 0.95));
-      color: #8a4960;
+      background: linear-gradient(135deg, rgba(255, 182, 193, 0.92), rgba(255, 228, 225, 0.92));
+      color: #8c4961;
+      transform: translateY(-1px);
     }
 
     .tab-panel {
-      padding: 28px;
       display: none;
-      min-height: 320px;
+      min-height: 360px;
+      padding: 28px;
       position: relative;
       overflow: hidden;
     }
@@ -572,60 +499,74 @@
 
     .baby-panel {
       background:
-        radial-gradient(circle at 90% 20%, rgba(255, 215, 0, 0.18), transparent 20%),
-        linear-gradient(135deg, rgba(255, 246, 202, 0.9), rgba(255, 252, 233, 0.92));
+        radial-gradient(circle at 90% 18%, rgba(255, 215, 0, 0.18), transparent 22%),
+        linear-gradient(135deg, rgba(255, 247, 206, 0.94), rgba(255, 252, 235, 0.96));
     }
 
     .baby-panel::after {
-      content: "🍼  👶  🧸";
+      content: "🍼 👶 🧸";
       position: absolute;
-      right: 20px;
-      bottom: 16px;
-      opacity: 0.35;
+      right: 18px;
+      bottom: 14px;
       font-size: 1.8rem;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.18em;
+      opacity: 0.28;
     }
 
     .dad-panel {
       background:
-        radial-gradient(circle at top right, rgba(255, 215, 0, 0.16), transparent 22%),
-        linear-gradient(135deg, rgba(255, 240, 244, 0.9), rgba(255, 255, 255, 0.96));
+        radial-gradient(circle at top right, rgba(255, 215, 0, 0.14), transparent 22%),
+        linear-gradient(135deg, rgba(255, 242, 246, 0.94), rgba(255, 255, 255, 0.96));
     }
 
     .tab-panel h3 {
       margin: 0 0 14px;
-      color: #9f5369;
-      font-size: 1.3rem;
+      color: #9d546c;
+      font-size: 1.34rem;
     }
 
     .tab-panel p {
       margin: 0;
-      line-height: 1.9;
-      color: var(--text);
+      line-height: 1.95;
     }
 
-    .hidden {
-      display: none !important;
+    .audio-grid {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
     }
 
-    .voice-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 12px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(255, 182, 193, 0.14);
-      color: #b0647c;
+    .audio-card {
+      padding: 16px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 182, 193, 0.24);
+    }
+
+    .audio-card h4 {
+      margin: 0 0 8px;
+      color: #9c566d;
+      font-size: 1rem;
+    }
+
+    .audio-card small {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .audio-card audio {
+      width: 100%;
+    }
+
+    .audio-card a {
+      display: inline-block;
+      margin-top: 10px;
+      color: #b55e79;
+      font-size: 0.92rem;
       font-weight: 700;
-    }
-
-    .voice-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #ff7b9c;
-      animation: pulse 1.2s infinite;
     }
 
     .wish-grid {
@@ -637,21 +578,21 @@
     .wish-card {
       padding: 24px;
       position: relative;
-      transition: transform 0.28s ease, box-shadow 0.28s ease;
       overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .wish-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 22px 36px rgba(244, 140, 167, 0.24);
+      box-shadow: 0 24px 42px rgba(240, 140, 171, 0.2);
     }
 
     .wish-card::after {
       position: absolute;
       right: 16px;
-      bottom: 12px;
+      bottom: 14px;
       font-size: 2rem;
-      opacity: 0.18;
+      opacity: 0.16;
     }
 
     .wish-card:nth-child(1)::after {
@@ -674,37 +615,89 @@
     .wish-card p {
       margin: 0;
       color: var(--muted);
-      line-height: 1.8;
+      line-height: 1.86;
     }
 
-    .wish-card textarea {
-      min-height: 140px;
-      margin-top: 8px;
+    .wish-card textarea,
+    .generator-panel textarea {
+      width: 100%;
+      min-height: 148px;
+      border: 1px solid rgba(255, 182, 193, 0.32);
+      border-radius: 18px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--text);
+      resize: vertical;
+      outline: none;
+    }
+
+    .wish-card textarea:focus,
+    .generator-panel textarea:focus {
+      border-color: var(--pink-deep);
+      box-shadow: 0 0 0 4px rgba(240, 140, 171, 0.14);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(240, 140, 171, 0.18);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink-deep), #f7a7bb);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #ffd86f, #ffefb1);
+      color: #7c5b00;
+    }
+
+    .status,
+    .note {
+      margin-top: 12px;
+      color: #c05f7d;
+      font-size: 0.94rem;
+      line-height: 1.8;
     }
 
     .generator-layout {
       display: grid;
       grid-template-columns: minmax(0, 1fr) 320px;
-      gap: 22px;
+      gap: 20px;
       align-items: start;
     }
 
-    .memory-card {
+    .memory-card,
+    .generator-panel,
+    .share-wrap {
       padding: 22px;
     }
 
     .memory-frame {
-      background: linear-gradient(155deg, rgba(255, 182, 193, 0.24), rgba(255, 215, 0, 0.16));
       border-radius: 28px;
       padding: 18px;
-      border: 1px solid rgba(255, 182, 193, 0.28);
+      background: linear-gradient(155deg, rgba(255, 182, 193, 0.22), rgba(255, 215, 0, 0.12));
+      border: 1px solid rgba(255, 182, 193, 0.26);
     }
 
-    .memory-canvas {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 249, 249, 0.98));
-      border-radius: 24px;
-      overflow: hidden;
+    .capture {
       padding: 18px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 249, 249, 0.98));
     }
 
     .memory-photo {
@@ -712,11 +705,9 @@
       overflow: hidden;
       border-radius: 22px;
       aspect-ratio: 16 / 10;
-      background: #f8d5dc;
     }
 
-    .memory-photo img,
-    .memory-photo video {
+    .memory-photo img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -726,7 +717,7 @@
       position: absolute;
       inset: auto 0 0 0;
       padding: 18px;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(84, 54, 60, 0.56));
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(81, 50, 59, 0.56));
       color: #fff;
     }
 
@@ -738,28 +729,74 @@
 
     .memory-overlay p {
       margin: 8px 0 0;
-      line-height: 1.7;
+      line-height: 1.74;
       color: rgba(255, 255, 255, 0.96);
     }
 
-    .generator-panel {
-      padding: 22px;
-    }
-
-    .generated-output {
+    .generated {
       margin-top: 18px;
+      display: none;
     }
 
-    .generated-output img {
+    .generated.show {
+      display: block;
+    }
+
+    .generated img {
       width: 100%;
       border-radius: 22px;
-      border: 1px solid rgba(255, 182, 193, 0.26);
+      border: 1px solid rgba(255, 182, 193, 0.24);
+    }
+
+    .share-layout {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .share-layout h3 {
+      margin: 0 0 10px;
+      color: #9c556d;
+    }
+
+    .share-layout p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.84;
+    }
+
+    .share-url {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px dashed rgba(255, 182, 193, 0.42);
+      color: #b05c77;
+      word-break: break-all;
+      font-size: 0.94rem;
+    }
+
+    .qr-box {
+      min-height: 154px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(255, 182, 193, 0.24);
+      padding: 12px;
     }
 
     .footer {
-      padding: 44px 0 90px;
+      padding: 42px 0 92px;
       text-align: center;
       color: var(--muted);
+    }
+
+    .footer small {
+      display: block;
+      margin-top: 10px;
+      line-height: 1.8;
     }
 
     .bottom-nav {
@@ -768,12 +805,12 @@
       bottom: 14px;
       transform: translateX(-50%);
       width: min(920px, calc(100% - 24px));
-      background: rgba(255, 255, 255, 0.88);
-      border: 1px solid rgba(255, 182, 193, 0.28);
-      border-radius: 999px;
-      box-shadow: 0 18px 36px rgba(244, 140, 167, 0.18);
-      backdrop-filter: blur(16px);
       z-index: 20;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 182, 193, 0.28);
+      box-shadow: 0 16px 36px rgba(240, 140, 171, 0.16);
     }
 
     .bottom-nav ul {
@@ -781,32 +818,32 @@
       margin: 0;
       padding: 8px;
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 8px;
     }
 
     .bottom-nav a {
       display: block;
       text-align: center;
-      padding: 12px 8px;
+      padding: 11px 8px;
       border-radius: 999px;
-      color: #a25a73;
+      color: #a35b74;
       font-weight: 700;
-      font-size: 0.92rem;
-      transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease;
+      font-size: 0.9rem;
+      transition: background 0.2s ease, transform 0.2s ease;
     }
 
-    .bottom-nav a:hover,
-    .bottom-nav a.active {
-      background: linear-gradient(135deg, rgba(255, 182, 193, 0.88), rgba(255, 228, 225, 0.9));
-      color: #8a4560;
-      transform: translateY(-2px);
+    .bottom-nav a.active,
+    .bottom-nav a:hover {
+      background: linear-gradient(135deg, rgba(255, 182, 193, 0.86), rgba(255, 228, 225, 0.92));
+      color: #8d4960;
+      transform: translateY(-1px);
     }
 
     .reveal {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+      transform: translateY(26px);
+      transition: opacity 0.74s ease, transform 0.74s ease;
     }
 
     .reveal.visible {
@@ -821,6 +858,15 @@
       }
     }
 
+    @keyframes drift {
+      0%, 100% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      50% {
+        transform: translate3d(24px, -16px, 0) scale(1.04);
+      }
+    }
+
     @keyframes bounce {
       0%, 100% {
         transform: rotate(45deg) translate(0, 0);
@@ -830,94 +876,60 @@
       }
     }
 
-    @keyframes drift {
-      0%, 100% {
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-      50% {
-        transform: translate3d(20px, -18px, 0) scale(1.04);
-      }
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: scale(0.9);
-        opacity: 0.6;
-      }
-      50% {
-        transform: scale(1.15);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(0.9);
-        opacity: 0.6;
-      }
-    }
-
     @media (max-width: 980px) {
-      .editor-wrap,
-      .timeline-layout,
-      .messages-layout,
-      .generator-layout {
+      .story-banner,
+      .timeline-wrap,
+      .message-layout,
+      .generator-layout,
+      .share-layout {
         grid-template-columns: 1fr;
       }
 
-      .aside-indicator {
+      .year-box {
         position: static;
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        align-items: center;
       }
 
-      .aside-indicator strong {
-        font-size: 1.4rem;
+      .audio-grid {
+        grid-template-columns: 1fr;
       }
     }
 
     @media (max-width: 760px) {
-      .page-shell {
-        width: min(100% - 20px, 1160px);
-      }
-
-      .editor-grid,
-      .wish-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        border-radius: 0 0 28px 28px;
+      .shell {
+        width: min(100% - 20px, 1120px);
       }
 
       .section {
         padding-top: 58px;
       }
 
-      .editor-panel,
-      .publish-panel,
-      .tab-panel,
-      .wish-card,
-      .memory-card,
-      .generator-panel {
-        padding: 20px;
+      .wish-grid {
+        grid-template-columns: 1fr;
       }
 
       .timeline-toggle {
         grid-template-columns: auto 1fr;
       }
 
-      .timeline-arrow {
+      .arrow {
         grid-column: 2;
         justify-self: end;
       }
 
+      .tab-panel,
+      .memory-card,
+      .generator-panel,
+      .share-wrap,
+      .wish-card {
+        padding: 20px;
+      }
+
       .bottom-nav ul {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .bottom-nav a {
-        font-size: 0.76rem;
-        padding: 10px 4px;
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -925,345 +937,247 @@
 <body>
   <header class="hero" id="home">
     <div class="hero-inner">
-      <div class="eyebrow">Mother's Day Surprise</div>
+      <div class="eyebrow">Mother's Day Treasure Box</div>
       <h1>献给世界上最棒的妈妈</h1>
-      <p>扫描这个二维码，是你开启的第一个爱的宝箱。这里装着从等待你，到一起拥抱小小星光的每一个瞬间。</p>
-      <div class="hero-signoff" id="heroSignoff">爱你的老公 &amp; 宝宝 [宝宝名字 李星禾]</div>
+      <p>
+        扫描这个二维码，是你开启的第一个爱的宝箱。这里有等待你、拥抱你、看着你成为妈妈的每一个珍贵时刻。
+      </p>
+      <div class="hero-date">第一个母亲节快乐 · 2026年5月10日</div>
+      <div class="hero-sign">爱你的老公 &amp; 宝宝 李星禾</div>
     </div>
-    <a class="scroll-cue" href="#timeline">
+    <a class="scroll-cue" href="#intro" aria-label="向下滚动">
       <span>向下看看我们的故事</span>
-      <span aria-hidden="true"></span>
+      <i aria-hidden="true"></i>
     </a>
   </header>
 
-  <main class="page-shell">
-    <section class="section reveal" id="editor">
-      <div class="section-header">
-        <div class="tag">爱的编辑台</div>
-        <h2>先把这份礼物定制成只属于你们的样子</h2>
-        <p>
-          所有代码都在这一个页面里，适合直接部署到 GitHub Pages。你可以上传图片、视频、语音，填写文字，然后点击发布生成新链接和二维码。
-          如果上传文件很大，分享链接会变长，建议优先使用压缩过的素材。
-        </p>
-      </div>
-      <div class="editor-wrap">
-        <div class="card editor-panel">
-          <div class="editor-grid">
-            <div class="field">
-              <label for="babyName">宝宝名字 [宝宝名字 李星禾]</label>
-              <input id="babyName" type="text" value="李星禾" />
-            </div>
-            <div class="field">
-              <label for="specialDate">特殊日期 [特殊日期]</label>
-              <input id="specialDate" type="text" value="2025年5月11日" />
-            </div>
-            <div class="field">
-              <label for="birthDate">出生日期 [出生日期 2025年7月18日]</label>
-              <input id="birthDate" type="text" value="2025年7月18日" />
-            </div>
-            <div class="field">
-              <label for="birthTime">出生时间 [出生时间 15:33]</label>
-              <input id="birthTime" type="text" value="15:33" />
-            </div>
-            <div class="field">
-              <label for="birthWeight">出生体重 [出生体重 2880]</label>
-              <input id="birthWeight" type="text" value="2880克" />
-            </div>
-            <div class="field">
-              <label for="cardText">纪念卡片文字</label>
-              <input id="cardText" type="text" value="第一个母亲节快乐 - 2025年5月11日" />
-            </div>
-            <div class="field" style="grid-column: 1 / -1;">
-              <label for="dadMessage">爸爸的话 [爸爸的话 ...]</label>
-              <textarea id="dadMessage">老婆，这是你当妈妈后的第一个母亲节。看着你从女孩变成超人妈妈，我真的特别心疼也特别骄傲。往后带娃、家务我都多扛，你只管安心做自己，永远是我的宝贝。</textarea>
-            </div>
-            <div class="field" style="grid-column: 1 / -1;">
-              <label for="loveLetter">写一封情书</label>
-              <textarea id="loveLetter" placeholder="把你想说的话留在这里，她点开时会看到。"></textarea>
-            </div>
-            <div class="field">
-              <label for="narration1">时间轴旁白 1 [用户旁白]</label>
-              <textarea id="narration1">那天看到验孕棒上的两条线，我们抱在一起笑了好久。</textarea>
-            </div>
-            <div class="field">
-              <label for="narration2">时间轴旁白 2 [用户旁白]</label>
-              <textarea id="narration2">2025年7月18日，15:33，2880克，我们的世界从此完整。</textarea>
-            </div>
-            <div class="field">
-              <label for="narration3">时间轴旁白 3 [用户旁白]</label>
-              <textarea id="narration3">那一刻，所有熬夜喂奶的辛苦都值了。</textarea>
-            </div>
-            <div class="field">
-              <label for="narration4">时间轴旁白 4 [用户旁白]</label>
-              <textarea id="narration4">你的小脖子越来越有力，每天都在成长。</textarea>
-            </div>
-            <div class="field" style="grid-column: 1 / -1;">
-              <label for="narration5">时间轴旁白 5 [用户旁白]</label>
-              <textarea id="narration5">每一天都比昨天更爱你，更爱你们。</textarea>
-            </div>
-            <div class="upload-field">
-              <label for="uploadPregnancyImage">上传怀孕照片</label>
-              <input id="uploadPregnancyImage" type="file" accept="image/*" />
-            </div>
-            <div class="upload-field">
-              <label for="uploadBirthImage">上传出生照片</label>
-              <input id="uploadBirthImage" type="file" accept="image/*" />
-            </div>
-            <div class="upload-field">
-              <label for="uploadSmileImage">上传微笑照片</label>
-              <input id="uploadSmileImage" type="file" accept="image/*" />
-            </div>
-            <div class="upload-field">
-              <label for="uploadRecentImage">上传全家福</label>
-              <input id="uploadRecentImage" type="file" accept="image/*" />
-            </div>
-            <div class="upload-field">
-              <label for="uploadTimelineVideo">上传时间轴视频</label>
-              <input id="uploadTimelineVideo" type="file" accept="video/*" />
-            </div>
-            <div class="upload-field">
-              <label for="uploadVoice">上传语音祝福</label>
-              <input id="uploadVoice" type="file" accept="audio/*" />
-            </div>
-          </div>
-          <div class="editor-actions">
-            <button class="btn btn-primary" id="applyChangesBtn">应用到页面</button>
-            <button class="btn btn-light" id="saveDraftBtn">保存本地草稿</button>
-          </div>
-          <p class="hint">
-            提示：`[宝宝名字 李星禾]` 在页面中出现 3 次，`[出生日期 2025年7月18日]`、`[出生时间 15:33]`、`[出生体重 2880]` 在时间轴中可改。
-          </p>
-          <div class="status" id="editorStatus"></div>
+  <main class="shell">
+    <section class="section reveal" id="intro">
+      <div class="card story-banner">
+        <div class="story-photo">
+          <img src="./Recent.jpg" alt="一家三口最近的合影" />
         </div>
-
-        <aside class="card publish-panel">
-          <h3 style="margin-top: 0; color: #a55670;">发布到分享链接</h3>
-          <p class="hint" style="margin-top: 0;">
-            这是纯前端静态站点方案。点击发布后，页面会把当前配置编码进链接中，再为这个链接生成二维码，适合部署到 GitHub Pages 后直接扫码打开。
+        <div class="story-copy">
+          <span class="tag">给超人妈妈的开场白</span>
+          <h3>这一年，你把自己活成了我们家的光</h3>
+          <p>
+            从知道宝宝到来的那天起，到看着李星禾在你怀里安稳睡着，再到今天一点点学会笑、学会抬头、学会依赖你，
+            我越来越明白，“妈妈”这两个字有多温柔，也有多了不起。
           </p>
-          <div class="publish-actions">
-            <button class="btn btn-secondary" id="publishBtn">生成新 URL 和二维码</button>
-            <button class="btn btn-light" id="copyLinkBtn">复制链接</button>
+          <div class="mini-quote">
+            老婆，这是你当妈妈后的第一个母亲节。看着你从女孩变成超人妈妈，我真的特别心疼也特别骄傲。往后带娃、家务我都多扛，你只管安心做自己，永远是我的宝贝。
           </div>
-          <div class="publish-output" id="publishOutput">这里会显示发布后的分享链接。</div>
-          <div class="qrcode-box" id="qrcodeBox">二维码将在这里生成</div>
-          <div class="status" id="publishStatus"></div>
-        </aside>
+        </div>
       </div>
     </section>
 
     <section class="section reveal" id="timeline">
-      <div class="section-header">
-        <div class="tag">我们的时间轴</div>
-        <h2>从期待，到相遇，到一起长大</h2>
-        <p>点开每一个节点，看看那些被温柔收藏起来的小瞬间。</p>
+      <div class="section-head">
+        <span class="tag">我们的时间轴</span>
+        <h2>从怀孕，到诞生，到现在的我们</h2>
+        <p>点开每个节点，沿着时间重新看一遍，这个小家是怎样一点一点发光的。</p>
       </div>
-      <div class="timeline-layout">
+
+      <div class="timeline-wrap">
         <div class="timeline">
           <article class="timeline-item open" data-date="2024.11">
-            <div class="timeline-dot"></div>
-            <div class="card timeline-card">
+            <div class="dot"></div>
+            <div class="card timeline-box">
               <button class="timeline-toggle" type="button">
-                <div class="timeline-icon">🤍</div>
+                <div class="icon">🤍</div>
                 <div>
-                  <h3 class="timeline-title">我们的新篇章开始了</h3>
-                  <div class="timeline-date">怀孕时刻</div>
+                  <h3>我们的新篇章开始了</h3>
+                  <small>怀孕时刻</small>
                 </div>
-                <div class="timeline-arrow">⌄</div>
+                <div class="arrow">⌄</div>
               </button>
               <div class="timeline-body">
-                <div class="timeline-body-inner">
-                  <div class="media-stack">
-                    <img
-                      id="pregnancyImage"
-                      src="https://via.placeholder.com/300x200/FFB6C1/FFFFFF?text=Pregnancy+Photo"
-                      alt="怀孕时刻"
-                    />
+                <div class="timeline-inner">
+                  <div class="timeline-media">
+                    <img src="./Pregnancy.jpg" alt="怀孕时期的珍贵照片" />
                   </div>
-                  <div class="timeline-copy">那天看到验孕棒上的两条线，我们抱在一起笑了好久。</div>
-                  <div class="narration" id="narrationText1">那天看到验孕棒上的两条线，我们抱在一起笑了好久。</div>
+                  <p>那天看到验孕棒上的两条线，我们抱在一起笑了好久。</p>
+                  <div class="mini-quote">那一刻像有人轻轻推开了未来的门，我们第一次认真想象，家里多一个小小身影会是什么样子。</div>
                 </div>
               </div>
             </div>
           </article>
 
           <article class="timeline-item" data-date="2025.07">
-            <div class="timeline-dot"></div>
-            <div class="card timeline-card">
+            <div class="dot"></div>
+            <div class="card timeline-box">
               <button class="timeline-toggle" type="button">
-                <div class="timeline-icon">✨</div>
+                <div class="icon">✨</div>
                 <div>
-                  <h3 class="timeline-title">欢迎来到我们的世界</h3>
-                  <div class="timeline-date">宝宝诞生</div>
+                  <h3>欢迎来到我们的世界</h3>
+                  <small>宝宝诞生 · 2025年7月18日 15:33 · 2880克</small>
                 </div>
-                <div class="timeline-arrow">⌄</div>
+                <div class="arrow">⌄</div>
               </button>
               <div class="timeline-body">
-                <div class="timeline-body-inner">
-                  <div class="media-stack">
-                    <img
-                      id="birthImage"
-                      src="https://via.placeholder.com/300x200/FFD700/000000?text=Newborn+Baby"
-                      alt="宝宝出生"
-                    />
+                <div class="timeline-inner">
+                  <div class="timeline-media">
+                    <img src="./Birth.jpg" alt="宝宝出生时的照片" />
                   </div>
-                  <div class="timeline-copy" id="birthStory">2025年7月18日，15:33，2880克，我们的世界从此完整。</div>
-                  <div class="narration" id="narrationText2">2025年7月18日，15:33，2880克，我们的世界从此完整。</div>
+                  <p>2025年7月18日，15:33，2880克，我们的世界从此完整。</p>
+                  <div class="mini-quote">我永远记得你辛苦却发亮的样子。宝宝来到我们怀里的那一刻，我就知道，以后这一生都想更认真地爱你们。</div>
                 </div>
               </div>
             </div>
           </article>
 
           <article class="timeline-item" data-date="2025.08">
-            <div class="timeline-dot"></div>
-            <div class="card timeline-card">
+            <div class="dot"></div>
+            <div class="card timeline-box">
               <button class="timeline-toggle" type="button">
-                <div class="timeline-icon">😊</div>
+                <div class="icon">😊</div>
                 <div>
-                  <h3 class="timeline-title">第一次对你微笑</h3>
-                  <div class="timeline-date">第一次微笑</div>
+                  <h3>第一次对你微笑</h3>
+                  <small>第一次微笑</small>
                 </div>
-                <div class="timeline-arrow">⌄</div>
+                <div class="arrow">⌄</div>
               </button>
               <div class="timeline-body">
-                <div class="timeline-body-inner">
-                  <div class="media-stack">
-                    <img
-                      id="smileImage"
-                      src="https://via.placeholder.com/300x200/87CEEB/FFFFFF?text=Baby+Smiling"
-                      alt="宝宝微笑"
-                    />
+                <div class="timeline-inner">
+                  <div class="timeline-media">
+                    <img src="./Smile.jpg" alt="宝宝第一次微笑的照片" />
                   </div>
-                  <div class="timeline-copy">宝宝第一次对你露出无意识的微笑。</div>
-                  <div class="narration" id="narrationText3">那一刻，所有熬夜喂奶的辛苦都值了。</div>
+                  <p>宝宝第一次对你露出无意识的微笑，好像在悄悄回答你所有熬夜的温柔。</p>
+                  <div class="mini-quote">那一刻，所有喂奶、拍嗝、哄睡的辛苦都值了。你低头看她，她也在认认真真地爱你。</div>
                 </div>
               </div>
             </div>
           </article>
 
           <article class="timeline-item" data-date="2025.09">
-            <div class="timeline-dot"></div>
-            <div class="card timeline-card">
+            <div class="dot"></div>
+            <div class="card timeline-box">
               <button class="timeline-toggle" type="button">
-                <div class="timeline-icon">💪</div>
+                <div class="icon">💪</div>
                 <div>
-                  <h3 class="timeline-title">小脑袋抬起来啦</h3>
-                  <div class="timeline-date">第一次抬头</div>
+                  <h3>小脑袋抬起来啦</h3>
+                  <small>第一次抬头</small>
                 </div>
-                <div class="timeline-arrow">⌄</div>
+                <div class="arrow">⌄</div>
               </button>
               <div class="timeline-body">
-                <div class="timeline-body-inner">
-                  <div class="media-stack">
-                    <video id="timelineVideo" class="hidden" controls playsinline></video>
+                <div class="timeline-inner">
+                  <div class="timeline-media">
+                    <img src="./Smile.jpg" alt="宝宝努力抬头的阶段照片" />
                   </div>
-                  <div class="timeline-copy">宝宝第一次努力抬起小脑袋看你。</div>
-                  <div class="narration" id="narrationText4">你的小脖子越来越有力，每天都在成长。</div>
+                  <p>宝宝第一次努力抬起小脑袋看你，眼睛里全是“妈妈在哪里”。</p>
+                  <div class="mini-quote">你的小脖子越来越有力，每天都在成长。她看向你的样子，就像在确认这个世界上最安心的方向。</div>
                 </div>
               </div>
             </div>
           </article>
 
           <article class="timeline-item" data-date="2026.05">
-            <div class="timeline-dot"></div>
-            <div class="card timeline-card">
+            <div class="dot"></div>
+            <div class="card timeline-box">
               <button class="timeline-toggle" type="button">
-                <div class="timeline-icon">🏡</div>
+                <div class="icon">🏡</div>
                 <div>
-                  <h3 class="timeline-title">现在的我们</h3>
-                  <div class="timeline-date">最近时刻</div>
+                  <h3>现在的我们</h3>
+                  <small>最近时刻</small>
                 </div>
-                <div class="timeline-arrow">⌄</div>
+                <div class="arrow">⌄</div>
               </button>
               <div class="timeline-body">
-                <div class="timeline-body-inner">
-                  <div class="media-stack">
-                    <img
-                      id="recentImage"
-                      src="https://via.placeholder.com/300x200/98FB98/000000?text=Family+Photo"
-                      alt="最近的全家福"
-                    />
+                <div class="timeline-inner">
+                  <div class="timeline-media">
+                    <img src="./Recent.jpg" alt="最近的全家福" />
                   </div>
-                  <div class="timeline-copy">最近的全家福。</div>
-                  <div class="narration" id="narrationText5">每一天都比昨天更爱你，更爱你们。</div>
+                  <p>最近的全家福，也是这个家越来越像“家”的样子。</p>
+                  <div class="mini-quote">每一天都比昨天更爱你，也更爱我们。谢谢你把平凡的日子，养成了柔软又有光的春天。</div>
                 </div>
               </div>
             </div>
           </article>
         </div>
 
-        <aside class="card aside-indicator">
-          <div>
-            <strong id="timelineDateDisplay">2026.05</strong>
-            <span>故事正在这里发光</span>
-          </div>
+        <aside class="card year-box">
+          <strong id="timelineDateDisplay">2026.05</strong>
+          <span>故事正在这里发光</span>
         </aside>
       </div>
     </section>
 
     <section class="section reveal" id="messages">
-      <div class="section-header">
-        <div class="tag">特别留言</div>
-        <h2>有些爱，适合被轻轻说给你听</h2>
-        <p>宝宝还不会说话，但爱早就先会了。爸爸也把那些平时没说完的话，放在这里。</p>
+      <div class="section-head">
+        <span class="tag">特别留言</span>
+        <h2>有些爱，想慢一点说给你听</h2>
+        <p>宝宝的话很软，爸爸的话很真。都留在这里，等你在某个安静的瞬间点开。</p>
       </div>
-      <div class="messages-layout">
-        <div class="card tabs">
+
+      <div class="message-layout">
+        <div class="card tab-list">
           <button class="tab-btn active" data-tab="babyTab">宝宝的话</button>
           <button class="tab-btn" data-tab="dadTab">爸爸的话</button>
         </div>
+
         <div class="card tab-panel baby-panel active" id="babyTab">
           <h3>宝宝想对妈妈说...</h3>
           <p>
             妈妈，虽然我还不会说话，但我知道你的怀抱最温暖。谢谢你陪我长大，给我换尿布、喂neinei、唱摇篮曲。
-            我爱你，从头顶到脚趾头那么爱！
+            我爱你，从头顶到脚趾头那么爱。以后我会一天一天长大，也会一天一天更懂你对我的爱。
           </p>
         </div>
+
         <div class="card tab-panel dad-panel" id="dadTab">
           <h3>爸爸想对老婆说...</h3>
-          <p id="dadMessageDisplay">
-            老婆，这是你当妈妈后的第一个母亲节。看着你从女孩变成超人妈妈，我真的特别心疼也特别骄傲。往后带娃、家务我都多扛，你只管安心做自己，永远是我的宝贝。
+          <p>
+            老婆，这是你当妈妈后的第一个母亲节。看着你从女孩变成超人妈妈，我真的特别心疼也特别骄傲。
+            我看到你学着照顾宝宝、顾不上自己、常常累到眼睛都睁不开，却还是会第一时间抱起她、安慰她、亲亲她。
+            谢谢你为我们的小家付出的一切。我爱你，永远。
           </p>
-          <div class="message-actions">
-            <button class="btn btn-secondary" id="simulateRecordBtn">录制语音</button>
-            <button class="btn btn-light" id="toggleLetterBtn">写一封情书</button>
+
+          <div class="audio-grid">
+            <div class="audio-card">
+              <h4>晚安摇篮曲</h4>
+              <small>轻柔、很适合放在夜里哄睡时当背景音乐。</small>
+              <audio controls preload="none" src="https://www.orangefreesounds.com/wp-content/uploads/2014/09/Baby-sleeping-music.mp3"></audio>
+              <a href="https://orangefreesounds.com/baby-sleeping-music/" target="_blank" rel="noreferrer">资源来源</a>
+            </div>
+            <div class="audio-card">
+              <h4>音乐盒旋律</h4>
+              <small>偏童话感一点，适合当页面里的温柔占位音频。</small>
+              <audio controls preload="none" src="https://www.orangefreesounds.com/wp-content/uploads/2016/08/Music-box-melody.mp3"></audio>
+              <a href="https://orangefreesounds.com/music-box-melody/" target="_blank" rel="noreferrer">资源来源</a>
+            </div>
+            <div class="audio-card">
+              <h4>布拉姆斯摇篮曲</h4>
+              <small>经典一点，之后你也可以替换成自己的语音祝福。</small>
+              <audio controls preload="none" src="https://www.orangefreesounds.com/wp-content/uploads/2017/10/Brahms-lullaby.mp3"></audio>
+              <a href="https://orangefreesounds.com/brahms-lullaby/" target="_blank" rel="noreferrer">资源来源</a>
+            </div>
           </div>
-          <div class="voice-badge hidden" id="voiceBadge">
-            <span class="voice-dot"></span>
-            <span>语音已准备好播放</span>
-          </div>
-          <audio id="voicePlayer" class="hidden" controls style="width: 100%; margin-top: 12px;"></audio>
-          <div class="field hidden" id="loveLetterWrap" style="margin-top: 18px;">
-            <label for="loveLetterInline">给妈妈的情书</label>
-            <textarea id="loveLetterInline" placeholder="把更多爱留在这里。"></textarea>
-          </div>
-          <div class="narration hidden" id="loveLetterOutput" style="margin-top: 18px;"></div>
         </div>
       </div>
     </section>
 
     <section class="section reveal" id="wishes">
-      <div class="section-header">
-        <div class="tag">未来之约</div>
+      <div class="section-head">
+        <span class="tag">未来之约</span>
         <h2>我们的未来之约</h2>
-        <p>把接下来想一起实现的小愿望，郑重地放进这个家的未来宝箱。</p>
+        <p>把以后想一起完成的小愿望，认真收进这个家的未来宝箱里。</p>
       </div>
+
       <div class="wish-grid">
         <article class="card wish-card">
           <h3>宝宝的愿望</h3>
-          <p>希望妈妈永远开心，陪我吃好多好多好吃的！</p>
+          <p>希望妈妈永远开心，陪我吃好多好多好吃的，陪我去很多很多有阳光的地方。</p>
         </article>
+
         <article class="card wish-card">
           <h3>爸爸的愿望</h3>
-          <p>希望今年能陪你完成一次你想了很久的旅行。</p>
+          <p>希望今年能陪你完成一次你想了很久的旅行，让你只是妈妈，也还是那个被偏爱的你自己。</p>
         </article>
+
         <article class="card wish-card">
           <h3>妈妈的愿望</h3>
-          <div class="field">
-            <label for="momWish">写下你对未来的一个愿望...</label>
-            <textarea id="momWish" placeholder="写下你对未来的一个愿望..."></textarea>
-          </div>
-          <div class="wish-actions">
+          <textarea id="momWish" placeholder="写下你对未来的一个愿望..."></textarea>
+          <div class="actions">
             <button class="btn btn-primary" id="saveWishBtn">保存愿望</button>
           </div>
           <div class="status" id="wishStatus"></div>
@@ -1272,49 +1186,67 @@
     </section>
 
     <section class="section reveal" id="generator">
-      <div class="section-header">
-        <div class="tag">纪念生成器</div>
+      <div class="section-head">
+        <span class="tag">纪念生成器</span>
         <h2>把这一刻做成一张可以收藏的卡片</h2>
         <p>保存这张图片，记录我们第一个母亲节的幸福。</p>
       </div>
+
       <div class="generator-layout">
         <div class="card memory-card">
           <div class="memory-frame">
-            <div class="memory-canvas" id="captureArea">
+            <div class="capture" id="captureArea">
               <div class="memory-photo">
-                <img
-                  id="memoryImage"
-                  src="https://via.placeholder.com/300x200/98FB98/000000?text=Family+Photo"
-                  alt="全家福纪念卡"
-                />
+                <img src="./Recent.jpg" alt="全家福纪念卡底图" />
                 <div class="memory-overlay">
-                  <h3 id="memoryCardTitle">第一个母亲节快乐 - 2025年5月11日</h3>
-                  <p id="memoryCardSubtitle">愿以后的每一年，我们都继续一起笑、一起长大、一起把平凡日子过成礼物。</p>
+                  <h3>第一个母亲节快乐 - 2026年5月10日</h3>
+                  <p id="memorySubtitle">愿以后的每一年，我们都继续一起笑、一起长大、一起把平凡日子过成礼物。</p>
                 </div>
               </div>
             </div>
           </div>
-          <div class="generated-output hidden" id="generatedOutput">
+          <div class="generated" id="generatedWrap">
             <img id="generatedImage" alt="生成的纪念卡片" />
           </div>
         </div>
+
         <aside class="card generator-panel">
-          <div class="field">
-            <label for="memorySubtitleInput">自定义文字</label>
-            <textarea id="memorySubtitleInput">愿以后的每一年，我们都继续一起笑、一起长大、一起把平凡日子过成礼物。</textarea>
+          <span class="tag">自定义一句话</span>
+          <h3 style="margin: 12px 0 12px; color: #9d546c;">留给未来再看的温柔备注</h3>
+          <textarea id="memoryInput">愿以后的每一年，我们都继续一起笑、一起长大、一起把平凡日子过成礼物。</textarea>
+          <div class="actions">
+            <button class="btn btn-secondary" id="generateBtn">生成图片</button>
+            <button class="btn btn-primary" id="downloadBtn">下载纪念卡</button>
           </div>
-          <div class="generator-actions">
-            <button class="btn btn-secondary" id="generateImageBtn">生成图片</button>
-            <button class="btn btn-light" id="downloadImageBtn">下载纪念卡</button>
-          </div>
-          <p class="hint">如果已经上传全家福，这里会自动使用上传的照片作为模板主图。</p>
-          <div class="status" id="generatorStatus"></div>
+          <div class="note" id="generatorStatus">这里会自动使用最近的全家福生成纪念卡。</div>
         </aside>
       </div>
     </section>
 
+    <section class="section reveal" id="share">
+      <div class="section-head">
+        <span class="tag">扫码打开</span>
+        <h2>把这份礼物分享给未来的每一个自己</h2>
+        <p>部署到 GitHub Pages 之后，这里会自动根据当前页面地址生成二维码，方便你直接打印或转发。</p>
+      </div>
+
+      <div class="card share-wrap">
+        <div class="share-layout">
+          <div>
+            <h3>当前页面链接</h3>
+            <p>如果你已经部署到 GitHub Pages，这个二维码就可以直接给她扫码打开。若现在还是本地文件，部署后二维码会自动变成线上地址。</p>
+            <div class="share-url" id="shareUrl"></div>
+          </div>
+          <div class="qr-box" id="qrcodeBox">二维码生成中...</div>
+        </div>
+      </div>
+    </section>
+
     <footer class="footer">
-      <p id="footerCopy">© 2025 我们仨的第一个春天 | 送给最爱的妈妈 | 爱你的老公和[宝宝名字 李星禾]</p>
+      <div>© 2026 我们仨的第一个春天 | 送给最爱的妈妈 | 爱你的老公和李星禾</div>
+      <small>
+        占位音频来源：Orange Free Sounds。之后可以直接替换为你自己的语音文件或宝宝声音。
+      </small>
     </footer>
   </main>
 
@@ -1324,513 +1256,39 @@
       <li><a href="#timeline" class="nav-link">时间轴</a></li>
       <li><a href="#messages" class="nav-link">留言</a></li>
       <li><a href="#wishes" class="nav-link">许愿</a></li>
-      <li><a href="#generator" class="nav-link">生成卡片</a></li>
+      <li><a href="#generator" class="nav-link">卡片</a></li>
+      <li><a href="#share" class="nav-link">二维码</a></li>
     </ul>
   </nav>
 
   <script>
     console.log("祝世界上最棒的妈妈节日快乐！");
 
-    const STORAGE_KEY = "supermother-gift-state";
     const WISH_KEY = "supermother-mom-wish";
-
-    const defaultState = {
-      babyName: "李星禾",
-      specialDate: "2025年5月11日",
-      birthDate: "2025年7月18日",
-      birthTime: "15:33",
-      birthWeight: "2880克",
-      dadMessage:
-        "老婆，这是你当妈妈后的第一个母亲节。看着你从女孩变成超人妈妈，我真的特别心疼也特别骄傲。往后带娃、家务我都多扛，你只管安心做自己，永远是我的宝贝。",
-      loveLetter: "",
-      narrations: [
-        "那天看到验孕棒上的两条线，我们抱在一起笑了好久。",
-        "2025年7月18日，15:33，2880克，我们的世界从此完整。",
-        "那一刻，所有熬夜喂奶的辛苦都值了。",
-        "你的小脖子越来越有力，每天都在成长。",
-        "每一天都比昨天更爱你，更爱你们。"
-      ],
-      cardText: "第一个母亲节快乐 - 2025年5月11日",
-      memorySubtitle: "愿以后的每一年，我们都继续一起笑、一起长大、一起把平凡日子过成礼物。",
-      momWish: "",
-      media: {
-        pregnancyImage: "https://via.placeholder.com/300x200/FFB6C1/FFFFFF?text=Pregnancy+Photo",
-        birthImage: "https://via.placeholder.com/300x200/FFD700/000000?text=Newborn+Baby",
-        smileImage: "https://via.placeholder.com/300x200/87CEEB/FFFFFF?text=Baby+Smiling",
-        recentImage: "https://via.placeholder.com/300x200/98FB98/000000?text=Family+Photo",
-        timelineVideo: "",
-        voiceAudio: ""
-      }
-    };
-
+    const MEMORY_KEY = "supermother-memory-text";
     let generatedImageData = "";
-    let currentState = structuredClone(defaultState);
 
-    const formRefs = {
-      babyName: document.getElementById("babyName"),
-      specialDate: document.getElementById("specialDate"),
-      birthDate: document.getElementById("birthDate"),
-      birthTime: document.getElementById("birthTime"),
-      birthWeight: document.getElementById("birthWeight"),
-      dadMessage: document.getElementById("dadMessage"),
-      loveLetter: document.getElementById("loveLetter"),
-      narrations: [
-        document.getElementById("narration1"),
-        document.getElementById("narration2"),
-        document.getElementById("narration3"),
-        document.getElementById("narration4"),
-        document.getElementById("narration5")
-      ],
-      cardText: document.getElementById("cardText"),
-      memorySubtitle: document.getElementById("memorySubtitleInput"),
-      momWish: document.getElementById("momWish")
-    };
+    function initTimeline() {
+      const items = document.querySelectorAll(".timeline-item");
 
-    const uploadMap = {
-      uploadPregnancyImage: "pregnancyImage",
-      uploadBirthImage: "birthImage",
-      uploadSmileImage: "smileImage",
-      uploadRecentImage: "recentImage",
-      uploadTimelineVideo: "timelineVideo",
-      uploadVoice: "voiceAudio"
-    };
-
-    function encodeState(state) {
-      return btoa(unescape(encodeURIComponent(JSON.stringify(state))));
-    }
-
-    function decodeState(encoded) {
-      return JSON.parse(decodeURIComponent(escape(atob(encoded))));
-    }
-
-    function mergeState(source = {}) {
-      return {
-        ...structuredClone(defaultState),
-        ...source,
-        media: {
-          ...defaultState.media,
-          ...(source.media || {})
-        },
-        narrations: Array.isArray(source.narrations) && source.narrations.length === 5
-          ? source.narrations
-          : [...defaultState.narrations]
-      };
-    }
-
-    function setStatus(id, message, timeout = 2400) {
-      const el = document.getElementById(id);
-      el.textContent = message;
-      if (timeout) {
-        window.setTimeout(() => {
-          if (el.textContent === message) {
-            el.textContent = "";
-          }
-        }, timeout);
-      }
-    }
-
-    function readFileAsDataURL(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    function populateForm(state) {
-      formRefs.babyName.value = state.babyName;
-      formRefs.specialDate.value = state.specialDate;
-      formRefs.birthDate.value = state.birthDate;
-      formRefs.birthTime.value = state.birthTime;
-      formRefs.birthWeight.value = state.birthWeight;
-      formRefs.dadMessage.value = state.dadMessage;
-      formRefs.loveLetter.value = state.loveLetter;
-      formRefs.cardText.value = state.cardText;
-      formRefs.memorySubtitle.value = state.memorySubtitle;
-      formRefs.momWish.value = state.momWish || localStorage.getItem(WISH_KEY) || "";
-      state.narrations.forEach((text, index) => {
-        formRefs.narrations[index].value = text;
-      });
-    }
-
-    function collectFormState() {
-      return {
-        ...currentState,
-        babyName: formRefs.babyName.value.trim() || defaultState.babyName,
-        specialDate: formRefs.specialDate.value.trim() || defaultState.specialDate,
-        birthDate: formRefs.birthDate.value.trim() || defaultState.birthDate,
-        birthTime: formRefs.birthTime.value.trim() || defaultState.birthTime,
-        birthWeight: formRefs.birthWeight.value.trim() || defaultState.birthWeight,
-        dadMessage: formRefs.dadMessage.value.trim() || defaultState.dadMessage,
-        loveLetter: formRefs.loveLetter.value.trim(),
-        cardText: formRefs.cardText.value.trim() || defaultState.cardText,
-        memorySubtitle: formRefs.memorySubtitle.value.trim() || defaultState.memorySubtitle,
-        momWish: formRefs.momWish.value.trim(),
-        narrations: formRefs.narrations.map((field, index) => field.value.trim() || defaultState.narrations[index])
-      };
-    }
-
-    function applyState(state) {
-      currentState = mergeState(state);
-
-      const babyName = currentState.babyName;
-      document.getElementById("heroSignoff").textContent = `爱你的老公 & 宝宝 ${babyName}`;
-      document.getElementById("footerCopy").textContent =
-        `© 2025 我们仨的第一个春天 | 送给最爱的妈妈 | 爱你的老公和${babyName}`;
-      document.getElementById("birthStory").textContent =
-        `${currentState.birthDate}，${currentState.birthTime}，${currentState.birthWeight}，我们的世界从此完整。`;
-      document.getElementById("dadMessageDisplay").textContent = currentState.dadMessage;
-      document.getElementById("narrationText1").textContent = currentState.narrations[0];
-      document.getElementById("narrationText2").textContent = currentState.narrations[1];
-      document.getElementById("narrationText3").textContent = currentState.narrations[2];
-      document.getElementById("narrationText4").textContent = currentState.narrations[3];
-      document.getElementById("narrationText5").textContent = currentState.narrations[4];
-      document.getElementById("memoryCardTitle").textContent = currentState.cardText;
-      document.getElementById("memoryCardSubtitle").textContent = currentState.memorySubtitle;
-
-      const loveLetterOutput = document.getElementById("loveLetterOutput");
-      const loveLetterInline = document.getElementById("loveLetterInline");
-      loveLetterInline.value = currentState.loveLetter;
-      if (currentState.loveLetter) {
-        loveLetterOutput.textContent = currentState.loveLetter;
-        loveLetterOutput.classList.remove("hidden");
-      } else {
-        loveLetterOutput.classList.add("hidden");
-      }
-
-      document.getElementById("momWish").value = currentState.momWish || localStorage.getItem(WISH_KEY) || "";
-
-      document.getElementById("pregnancyImage").src = currentState.media.pregnancyImage;
-      document.getElementById("birthImage").src = currentState.media.birthImage;
-      document.getElementById("smileImage").src = currentState.media.smileImage;
-      document.getElementById("recentImage").src = currentState.media.recentImage;
-      document.getElementById("memoryImage").src = currentState.media.recentImage;
-
-      const timelineVideo = document.getElementById("timelineVideo");
-      if (currentState.media.timelineVideo) {
-        timelineVideo.src = currentState.media.timelineVideo;
-        timelineVideo.classList.remove("hidden");
-      } else {
-        timelineVideo.removeAttribute("src");
-        timelineVideo.classList.add("hidden");
-      }
-
-      const voicePlayer = document.getElementById("voicePlayer");
-      const voiceBadge = document.getElementById("voiceBadge");
-      if (currentState.media.voiceAudio) {
-        voicePlayer.src = currentState.media.voiceAudio;
-        voicePlayer.classList.remove("hidden");
-        voiceBadge.classList.remove("hidden");
-      } else {
-        voicePlayer.removeAttribute("src");
-        voicePlayer.classList.add("hidden");
-        voiceBadge.classList.add("hidden");
-      }
-    }
-
-    function saveDraftToLocal() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(currentState));
-    }
-
-    function loadStateFromUrl() {
-      const hash = window.location.hash.startsWith("#gift=")
-        ? window.location.hash.replace("#gift=", "")
-        : "";
-      if (!hash) {
-        return null;
-      }
-      try {
-        return mergeState(decodeState(hash));
-      } catch (error) {
-        console.warn("无法解析分享链接中的礼物数据", error);
-        return null;
-      }
-    }
-
-    function getShareUrl(state) {
-      const encoded = encodeState(state);
-      return `${window.location.origin}${window.location.pathname}#gift=${encoded}`;
-    }
-
-    function renderQrCode(url) {
-      const box = document.getElementById("qrcodeBox");
-      box.innerHTML = "";
-      new QRCode(box, {
-        text: url,
-        width: 128,
-        height: 128,
-        colorDark: "#a55670",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    }
-
-    function validatePublishable(state) {
-      if (!state.babyName) {
-        setStatus("publishStatus", "请先填写宝宝名字。");
-        return false;
-      }
-      if (!state.cardText) {
-        setStatus("publishStatus", "请先填写纪念卡片标题。");
-        return false;
-      }
-      return true;
-    }
-
-    function openTimelineItem(item) {
-      const body = item.querySelector(".timeline-body");
-      item.classList.add("open");
-      body.style.maxHeight = `${body.scrollHeight}px`;
-    }
-
-    function closeTimelineItem(item) {
-      const body = item.querySelector(".timeline-body");
-      item.classList.remove("open");
-      body.style.maxHeight = "0px";
-    }
-
-    function initializeTimeline() {
-      document.querySelectorAll(".timeline-item").forEach((item, index) => {
+      items.forEach((item, index) => {
         const body = item.querySelector(".timeline-body");
         if (index === 0) {
           body.style.maxHeight = `${body.scrollHeight}px`;
         }
 
         item.querySelector(".timeline-toggle").addEventListener("click", () => {
-          const isOpen = item.classList.contains("open");
-          if (isOpen) {
-            closeTimelineItem(item);
+          const open = item.classList.contains("open");
+          if (open) {
+            item.classList.remove("open");
+            body.style.maxHeight = "0px";
           } else {
-            openTimelineItem(item);
+            item.classList.add("open");
+            body.style.maxHeight = `${body.scrollHeight}px`;
           }
         });
       });
-    }
 
-    function initializeTabs() {
-      document.querySelectorAll(".tab-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          document.querySelectorAll(".tab-btn").forEach((item) => item.classList.remove("active"));
-          document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.remove("active"));
-          btn.classList.add("active");
-          document.getElementById(btn.dataset.tab).classList.add("active");
-        });
-      });
-    }
-
-    function initializeReveal() {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("visible");
-              if (entry.target.classList.contains("timeline-item")) {
-                entry.target.classList.add("revealed");
-              }
-            }
-          });
-        },
-        { threshold: 0.18 }
-      );
-
-      document.querySelectorAll(".reveal, .timeline-item").forEach((el) => observer.observe(el));
-    }
-
-    function initializeTimelineIndicator() {
-      const dateDisplay = document.getElementById("timelineDateDisplay");
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const visible = entries
-            .filter((entry) => entry.isIntersecting)
-            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-          if (visible[0]) {
-            dateDisplay.textContent = visible[0].target.dataset.date;
-          }
-        },
-        { threshold: [0.35, 0.6, 0.85] }
-      );
-
-      document.querySelectorAll(".timeline-item").forEach((item) => observer.observe(item));
-    }
-
-    function initializeNavigationHighlight() {
-      const navLinks = document.querySelectorAll(".nav-link");
-      const sectionIds = ["home", "timeline", "messages", "wishes", "generator"];
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              navLinks.forEach((link) => {
-                link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`);
-              });
-            }
-          });
-        },
-        { threshold: 0.4 }
-      );
-      sectionIds.forEach((id) => observer.observe(document.getElementById(id)));
-    }
-
-    function initializeParallax() {
-      window.addEventListener("scroll", () => {
-        const offset = window.scrollY * 0.05;
-        document.body.style.setProperty("--scroll-offset", `${offset}px`);
-        document.body.style.backgroundPosition = `0 ${offset * 0.2}px, 100% ${offset * 0.12}px, 0 0`;
-      });
-    }
-
-    async function handleUpload(inputId, stateKey, file) {
-      if (!file) {
-        return;
-      }
-      const dataUrl = await readFileAsDataURL(file);
-      currentState = {
-        ...currentState,
-        media: {
-          ...currentState.media,
-          [stateKey]: dataUrl
-        }
-      };
-      applyState(currentState);
-      setStatus("editorStatus", `已更新素材：${file.name}`);
-    }
-
-    function initializeUploads() {
-      Object.entries(uploadMap).forEach(([inputId, stateKey]) => {
-        document.getElementById(inputId).addEventListener("change", async (event) => {
-          const [file] = event.target.files;
-          if (!file) {
-            return;
-          }
-          try {
-            await handleUpload(inputId, stateKey, file);
-          } catch (error) {
-            console.error(error);
-            setStatus("editorStatus", "文件读取失败，请重试。");
-          }
-        });
-      });
-    }
-
-    function initializeWishStorage() {
-      const savedWish = localStorage.getItem(WISH_KEY);
-      if (savedWish && !formRefs.momWish.value) {
-        formRefs.momWish.value = savedWish;
-      }
-      document.getElementById("saveWishBtn").addEventListener("click", () => {
-        const value = formRefs.momWish.value.trim();
-        if (!value) {
-          setStatus("wishStatus", "请先写下一个愿望。");
-          return;
-        }
-        localStorage.setItem(WISH_KEY, value);
-        currentState.momWish = value;
-        saveDraftToLocal();
-        setStatus("wishStatus", "愿望已保存到我们的未来宝箱！");
-      });
-    }
-
-    function initializeMessageArea() {
-      document.getElementById("simulateRecordBtn").addEventListener("click", () => {
-        document.getElementById("voiceBadge").classList.remove("hidden");
-        setStatus("editorStatus", "录制语音为模拟效果，可直接上传真实语音文件替换。");
-      });
-
-      document.getElementById("toggleLetterBtn").addEventListener("click", () => {
-        document.getElementById("loveLetterWrap").classList.toggle("hidden");
-      });
-
-      document.getElementById("loveLetterInline").addEventListener("input", (event) => {
-        formRefs.loveLetter.value = event.target.value;
-        currentState.loveLetter = event.target.value.trim();
-        applyState(currentState);
-      });
-    }
-
-    function initializeEditorActions() {
-      document.getElementById("applyChangesBtn").addEventListener("click", () => {
-        currentState = collectFormState();
-        applyState(currentState);
-        saveDraftToLocal();
-        setStatus("editorStatus", "页面内容已更新。");
-      });
-
-      document.getElementById("saveDraftBtn").addEventListener("click", () => {
-        currentState = collectFormState();
-        saveDraftToLocal();
-        setStatus("editorStatus", "草稿已保存到浏览器本地。");
-      });
-
-      document.getElementById("publishBtn").addEventListener("click", () => {
-        currentState = collectFormState();
-        applyState(currentState);
-        if (!validatePublishable(currentState)) {
-          return;
-        }
-
-        const shareUrl = getShareUrl(currentState);
-        if (shareUrl.length > 12000) {
-          setStatus("publishStatus", "分享链接过长。请压缩上传素材，或改用体积更小的图片/音视频。", 4200);
-          return;
-        }
-
-        document.getElementById("publishOutput").innerHTML = `<a href="${shareUrl}">${shareUrl}</a>`;
-        renderQrCode(shareUrl);
-        saveDraftToLocal();
-        setStatus("publishStatus", "发布成功，二维码已生成。", 3200);
-      });
-
-      document.getElementById("copyLinkBtn").addEventListener("click", async () => {
-        const text = document.getElementById("publishOutput").textContent.trim();
-        if (!text || text === "这里会显示发布后的分享链接。") {
-          setStatus("publishStatus", "请先生成分享链接。");
-          return;
-        }
-        try {
-          await navigator.clipboard.writeText(text);
-          setStatus("publishStatus", "链接已复制。");
-        } catch (error) {
-          console.error(error);
-          setStatus("publishStatus", "复制失败，请手动复制链接。");
-        }
-      });
-    }
-
-    function initializeGenerator() {
-      document.getElementById("generateImageBtn").addEventListener("click", async () => {
-        const area = document.getElementById("captureArea");
-        currentState = collectFormState();
-        applyState(currentState);
-        try {
-          const canvas = await html2canvas(area, {
-            backgroundColor: "#fff9f9",
-            scale: 2,
-            useCORS: true
-          });
-          generatedImageData = canvas.toDataURL("image/png");
-          document.getElementById("generatedImage").src = generatedImageData;
-          document.getElementById("generatedOutput").classList.remove("hidden");
-          setStatus("generatorStatus", "纪念卡片已生成。");
-        } catch (error) {
-          console.error(error);
-          setStatus("generatorStatus", "生成失败，请检查素材是否可访问。", 3600);
-        }
-      });
-
-      document.getElementById("downloadImageBtn").addEventListener("click", () => {
-        if (!generatedImageData) {
-          setStatus("generatorStatus", "请先生成图片。");
-          return;
-        }
-        const link = document.createElement("a");
-        link.href = generatedImageData;
-        link.download = "super-mom-memories.png";
-        link.click();
-      });
-    }
-
-    function initializeResizeBehavior() {
       window.addEventListener("resize", () => {
         document.querySelectorAll(".timeline-item.open .timeline-body").forEach((body) => {
           body.style.maxHeight = `${body.scrollHeight}px`;
@@ -1838,36 +1296,175 @@
       });
     }
 
-    function bootstrap() {
-      const urlState = loadStateFromUrl();
-      const localState = localStorage.getItem(STORAGE_KEY);
-      const parsedLocalState = localState ? mergeState(JSON.parse(localState)) : null;
-      currentState = urlState || parsedLocalState || structuredClone(defaultState);
-      currentState.momWish = currentState.momWish || localStorage.getItem(WISH_KEY) || "";
+    function initTabs() {
+      const buttons = document.querySelectorAll(".tab-btn");
+      const panels = document.querySelectorAll(".tab-panel");
 
-      populateForm(currentState);
-      applyState(currentState);
-      initializeTimeline();
-      initializeTabs();
-      initializeReveal();
-      initializeTimelineIndicator();
-      initializeNavigationHighlight();
-      initializeParallax();
-      initializeUploads();
-      initializeWishStorage();
-      initializeMessageArea();
-      initializeEditorActions();
-      initializeGenerator();
-      initializeResizeBehavior();
-
-      if (window.location.hash.startsWith("#gift=")) {
-        document.getElementById("publishOutput").innerHTML =
-          `<a href="${window.location.href}">${window.location.href}</a>`;
-        renderQrCode(window.location.href);
-      }
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          buttons.forEach((item) => item.classList.remove("active"));
+          panels.forEach((panel) => panel.classList.remove("active"));
+          button.classList.add("active");
+          document.getElementById(button.dataset.tab).classList.add("active");
+        });
+      });
     }
 
-    bootstrap();
+    function initReveal() {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+            }
+          });
+        },
+        { threshold: 0.16 }
+      );
+
+      document.querySelectorAll(".reveal, .timeline-item").forEach((el) => observer.observe(el));
+    }
+
+    function initTimelineIndicator() {
+      const display = document.getElementById("timelineDateDisplay");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          if (visible[0]) {
+            display.textContent = visible[0].target.dataset.date;
+          }
+        },
+        { threshold: [0.32, 0.55, 0.8] }
+      );
+
+      document.querySelectorAll(".timeline-item").forEach((item) => observer.observe(item));
+    }
+
+    function initNavHighlight() {
+      const links = document.querySelectorAll(".nav-link");
+      const sections = ["home", "timeline", "messages", "wishes", "generator", "share"];
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              links.forEach((link) => {
+                link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`);
+              });
+            }
+          });
+        },
+        { threshold: 0.42 }
+      );
+
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          observer.observe(el);
+        }
+      });
+    }
+
+    function initWishStorage() {
+      const wishInput = document.getElementById("momWish");
+      const wishStatus = document.getElementById("wishStatus");
+      const savedWish = localStorage.getItem(WISH_KEY);
+
+      if (savedWish) {
+        wishInput.value = savedWish;
+      }
+
+      document.getElementById("saveWishBtn").addEventListener("click", () => {
+        const value = wishInput.value.trim();
+        if (!value) {
+          wishStatus.textContent = "请先写下一个愿望。";
+          return;
+        }
+        localStorage.setItem(WISH_KEY, value);
+        wishStatus.textContent = "愿望已保存到我们的未来宝箱！";
+      });
+    }
+
+    function initGenerator() {
+      const subtitle = document.getElementById("memorySubtitle");
+      const input = document.getElementById("memoryInput");
+      const status = document.getElementById("generatorStatus");
+      const generatedWrap = document.getElementById("generatedWrap");
+      const generatedImage = document.getElementById("generatedImage");
+      const savedText = localStorage.getItem(MEMORY_KEY);
+
+      if (savedText) {
+        input.value = savedText;
+        subtitle.textContent = savedText;
+      }
+
+      input.addEventListener("input", () => {
+        subtitle.textContent = input.value.trim() || "愿以后的每一年，我们都继续一起笑、一起长大、一起把平凡日子过成礼物。";
+        localStorage.setItem(MEMORY_KEY, subtitle.textContent);
+      });
+
+      document.getElementById("generateBtn").addEventListener("click", async () => {
+        try {
+          const canvas = await html2canvas(document.getElementById("captureArea"), {
+            backgroundColor: "#fff9f9",
+            scale: 2,
+            useCORS: true
+          });
+          generatedImageData = canvas.toDataURL("image/png");
+          generatedImage.src = generatedImageData;
+          generatedWrap.classList.add("show");
+          status.textContent = "纪念卡已生成，可以直接下载。";
+        } catch (error) {
+          console.error(error);
+          status.textContent = "生成失败，请稍后重试。";
+        }
+      });
+
+      document.getElementById("downloadBtn").addEventListener("click", () => {
+        if (!generatedImageData) {
+          status.textContent = "请先生成图片。";
+          return;
+        }
+        const link = document.createElement("a");
+        link.href = generatedImageData;
+        link.download = "super-mom-memory-card.png";
+        link.click();
+      });
+    }
+
+    function initQRCode() {
+      const url = window.location.href;
+      document.getElementById("shareUrl").textContent = url;
+      const target = document.getElementById("qrcodeBox");
+      target.innerHTML = "";
+      new QRCode(target, {
+        text: url,
+        width: 132,
+        height: 132,
+        colorDark: "#a55670",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
+    function initParallax() {
+      window.addEventListener("scroll", () => {
+        const y = window.scrollY;
+        document.body.style.backgroundPosition = `0 ${y * 0.16}px, 100% ${y * 0.08}px, 0 0`;
+      });
+    }
+
+    initTimeline();
+    initTabs();
+    initReveal();
+    initTimelineIndicator();
+    initNavHighlight();
+    initWishStorage();
+    initGenerator();
+    initQRCode();
+    initParallax();
   </script>
 </body>
 </html>
