@@ -979,7 +979,7 @@
   <button class="music-toggle is-off" id="musicToggle" type="button" aria-label="Play background music" title="Play background music">
     &#9834;
   </button>
-  <audio id="bgMusic" loop preload="auto"></audio>
+  <audio id="bgMusic" loop preload="auto" autoplay playsinline></audio>
 
   <header class="hero" id="home">
     <div class="hero-inner">
@@ -1397,13 +1397,20 @@
     function initWishStorage() {
       const wishInput = document.getElementById("momWish");
       const wishStatus = document.getElementById("wishStatus");
+      const saveWishBtn = document.getElementById("saveWishBtn");
+
+      // The wish editor may be omitted from the page.
+      if (!wishInput || !wishStatus || !saveWishBtn) {
+        return;
+      }
+
       const savedWish = localStorage.getItem(WISH_KEY);
 
       if (savedWish) {
         wishInput.value = savedWish;
       }
 
-      document.getElementById("saveWishBtn").addEventListener("click", () => {
+      saveWishBtn.addEventListener("click", () => {
         const value = wishInput.value.trim();
         if (!value) {
           wishStatus.textContent = "请先写下一个愿望。";
@@ -1518,15 +1525,21 @@
         currentTrack = trackKey;
         const wasPlaying = isEnabled && !audio.paused;
         audio.src = tracks[trackKey];
+        audio.dataset.track = trackKey;
         audio.load();
         if (wasPlaying) {
           audio.play().catch(() => {});
         }
+        syncToggle();
       }
 
       async function enableMusic() {
         isEnabled = true;
-        audio.src = tracks[currentTrack];
+        if (audio.dataset.track !== currentTrack) {
+          audio.src = tracks[currentTrack];
+          audio.dataset.track = currentTrack;
+          audio.load();
+        }
         try {
           await audio.play();
         } catch (error) {
@@ -1570,17 +1583,11 @@
         }
       });
 
-      const unlockOnce = () => {
-        if (!isEnabled) {
-          enableMusic();
-        }
-      };
-
-      document.addEventListener("pointerdown", unlockOnce, { once: true });
-      document.addEventListener("keydown", unlockOnce, { once: true });
-
       audio.src = tracks[currentTrack];
-      syncToggle();
+      audio.dataset.track = currentTrack;
+      audio.addEventListener("play", syncToggle);
+      audio.addEventListener("pause", syncToggle);
+      enableMusic();
     }
 
     initTimeline();
@@ -1590,7 +1597,7 @@
     initNavHighlight();
     initWishStorage();
     initGenerator();
-    initQRCode();
+    // initQRCode();
     initParallax();
     initBackgroundMusic();
   </script>
