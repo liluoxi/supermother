@@ -840,6 +840,38 @@
       transform: translateY(-1px);
     }
 
+    .music-toggle {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 30;
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 182, 193, 0.34);
+      box-shadow: 0 14px 32px rgba(240, 140, 171, 0.2);
+      color: #a95671;
+      font-size: 1.35rem;
+      transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease;
+    }
+
+    .music-toggle:hover {
+      transform: translateY(-2px);
+    }
+
+    .music-toggle.is-off {
+      background: rgba(255, 255, 255, 0.72);
+      color: #d29aa9;
+    }
+
+    .music-toggle.is-playing {
+      animation: musicPulse 2.2s ease-in-out infinite;
+    }
+
     .reveal {
       opacity: 0;
       transform: translateY(26px);
@@ -873,6 +905,15 @@
       }
       50% {
         transform: rotate(45deg) translate(6px, 6px);
+      }
+    }
+
+    @keyframes musicPulse {
+      0%, 100% {
+        box-shadow: 0 14px 32px rgba(240, 140, 171, 0.2);
+      }
+      50% {
+        box-shadow: 0 14px 36px rgba(240, 140, 171, 0.34);
       }
     }
 
@@ -935,6 +976,11 @@
   </style>
 </head>
 <body>
+  <button class="music-toggle is-off" id="musicToggle" type="button" aria-label="Play background music" title="Play background music">
+    &#9834;
+  </button>
+  <audio id="bgMusic" loop preload="auto"></audio>
+
   <header class="hero" id="home">
     <div class="hero-inner">
       <div class="eyebrow">Mother's Day Treasure Box</div>
@@ -1437,6 +1483,106 @@
       });
     }
 
+    function initBackgroundMusic() {
+      const audio = document.getElementById("bgMusic");
+      const toggle = document.getElementById("musicToggle");
+      const tracks = {
+        sunshine: "You Are My Sunshine.mp3",
+        timeline: "A Time For Us.mp3",
+        messages: "The Promise.mp3"
+      };
+      const sectionTrackMap = {
+        home: "sunshine",
+        intro: "sunshine",
+        timeline: "timeline",
+        messages: "messages",
+        wishes: "messages",
+        generator: "messages",
+        share: "messages"
+      };
+      let currentTrack = "sunshine";
+      let isEnabled = false;
+
+      function syncToggle() {
+        toggle.classList.toggle("is-off", !isEnabled);
+        toggle.classList.toggle("is-playing", isEnabled && !audio.paused);
+        toggle.setAttribute("aria-label", isEnabled ? "Pause background music" : "Play background music");
+        toggle.setAttribute("title", isEnabled ? "Pause background music" : "Play background music");
+        toggle.textContent = isEnabled ? "\u266B" : "\u266A";
+      }
+
+      function setTrack(trackKey) {
+        if (!tracks[trackKey] || currentTrack === trackKey) {
+          return;
+        }
+        currentTrack = trackKey;
+        const wasPlaying = isEnabled && !audio.paused;
+        audio.src = tracks[trackKey];
+        audio.load();
+        if (wasPlaying) {
+          audio.play().catch(() => {});
+        }
+      }
+
+      async function enableMusic() {
+        isEnabled = true;
+        audio.src = tracks[currentTrack];
+        try {
+          await audio.play();
+        } catch (error) {
+          isEnabled = false;
+        }
+        syncToggle();
+      }
+
+      function disableMusic() {
+        isEnabled = false;
+        audio.pause();
+        syncToggle();
+      }
+
+      toggle.addEventListener("click", () => {
+        if (isEnabled) {
+          disableMusic();
+        } else {
+          enableMusic();
+        }
+      });
+
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          if (!visible[0]) {
+            return;
+          }
+          const nextTrack = sectionTrackMap[visible[0].target.id] || "sunshine";
+          setTrack(nextTrack);
+        },
+        { threshold: [0.3, 0.55, 0.8] }
+      );
+
+      Object.keys(sectionTrackMap).forEach((id) => {
+        const section = document.getElementById(id);
+        if (section) {
+          sectionObserver.observe(section);
+        }
+      });
+
+      const unlockOnce = () => {
+        if (!isEnabled) {
+          enableMusic();
+        }
+      };
+
+      document.addEventListener("pointerdown", unlockOnce, { once: true });
+      document.addEventListener("keydown", unlockOnce, { once: true });
+
+      audio.src = tracks[currentTrack];
+      syncToggle();
+    }
+
     initTimeline();
     initTabs();
     initReveal();
@@ -1446,6 +1592,7 @@
     initGenerator();
     initQRCode();
     initParallax();
+    initBackgroundMusic();
   </script>
 </body>
 </html>
