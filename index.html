@@ -51,6 +51,11 @@
       overflow-x: hidden;
     }
 
+    body.booting {
+      overflow: hidden;
+      height: 100vh;
+    }
+
     body::before,
     body::after {
       content: "";
@@ -872,6 +877,144 @@
       animation: musicPulse 2.2s ease-in-out infinite;
     }
 
+    .boot-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background:
+        radial-gradient(circle at top, rgba(33, 60, 33, 0.28), transparent 30%),
+        linear-gradient(180deg, #020403 0%, #071108 100%);
+      transition: opacity 0.9s ease, visibility 0.9s ease;
+    }
+
+    .boot-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .boot-shell {
+      width: min(920px, 100%);
+      min-height: min(78vh, 760px);
+      border-radius: 24px;
+      overflow: hidden;
+      background: rgba(2, 7, 3, 0.96);
+      border: 1px solid rgba(132, 255, 162, 0.18);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.42);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .boot-topbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(132, 255, 162, 0.12);
+    }
+
+    .boot-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #1d4123;
+      box-shadow: 0 0 14px rgba(132, 255, 162, 0.12);
+    }
+
+    .boot-dot:nth-child(1) {
+      background: #31593a;
+    }
+
+    .boot-dot:nth-child(2) {
+      background: #487a52;
+    }
+
+    .boot-dot:nth-child(3) {
+      background: #69b26b;
+    }
+
+    .boot-title {
+      margin-left: auto;
+      color: rgba(201, 255, 206, 0.72);
+      font-size: 0.92rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .boot-screen {
+      padding: 24px 24px 8px;
+      font-family: "Consolas", "Courier New", monospace;
+      color: #89ff97;
+      overflow: auto;
+      line-height: 1.62;
+      white-space: pre-wrap;
+      word-break: break-word;
+      text-shadow: 0 0 8px rgba(108, 255, 130, 0.16);
+    }
+
+    .boot-line {
+      min-height: 1.62em;
+    }
+
+    .boot-line.art {
+      margin-top: 0;
+      min-height: 0;
+      color: #a8ffb1;
+      font-size: clamp(6px, 1.15vw, 10px);
+      line-height: 1;
+      letter-spacing: 0;
+      white-space: pre;
+      text-shadow: 0 0 10px rgba(108, 255, 130, 0.22);
+    }
+
+    .boot-prompt {
+      color: #d6ffd9;
+    }
+
+    .boot-cursor {
+      display: inline-block;
+      width: 0.7ch;
+      height: 1.1em;
+      margin-left: 2px;
+      vertical-align: -0.14em;
+      background: #ffffff;
+      animation: blinkCursor 0.95s steps(1) infinite;
+    }
+
+    .boot-actions {
+      padding: 18px 24px 26px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .boot-enter {
+      padding: 14px 28px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(146, 255, 160, 0.18), rgba(255, 255, 255, 0.1));
+      border: 1px solid rgba(146, 255, 160, 0.42);
+      color: #ebffed;
+      letter-spacing: 0.08em;
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: opacity 0.8s ease, transform 0.8s ease, box-shadow 0.25s ease;
+      box-shadow: 0 0 0 rgba(146, 255, 160, 0);
+    }
+
+    .boot-enter.ready {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .boot-enter:hover {
+      box-shadow: 0 12px 28px rgba(146, 255, 160, 0.18);
+    }
+
     .reveal {
       opacity: 0;
       transform: translateY(26px);
@@ -917,6 +1060,15 @@
       }
     }
 
+    @keyframes blinkCursor {
+      0%, 49% {
+        opacity: 1;
+      }
+      50%, 100% {
+        opacity: 0;
+      }
+    }
+
     @media (max-width: 980px) {
       .story-banner,
       .timeline-wrap,
@@ -936,6 +1088,14 @@
     }
 
     @media (max-width: 760px) {
+      .boot-screen {
+        padding: 18px 16px 8px;
+      }
+
+      .boot-line.art {
+        font-size: 12px;
+      }
+
       .shell {
         width: min(100% - 20px, 1120px);
       }
@@ -975,11 +1135,26 @@
     }
   </style>
 </head>
-<body>
+<body class="booting">
+  <div class="boot-overlay" id="bootOverlay" aria-hidden="false">
+    <div class="boot-shell">
+      <div class="boot-topbar">
+        <span class="boot-dot"></span>
+        <span class="boot-dot"></span>
+        <span class="boot-dot"></span>
+        <span class="boot-title">memory-cli.exe</span>
+      </div>
+      <div class="boot-screen" id="bootScreen"></div>
+      <div class="boot-actions">
+        <button class="boot-enter" id="bootEnter" type="button">Dear Mom</button>
+      </div>
+    </div>
+  </div>
+
   <button class="music-toggle is-off" id="musicToggle" type="button" aria-label="Play background music" title="Play background music">
     &#9834;
   </button>
-  <audio id="bgMusic" loop preload="auto" autoplay playsinline></audio>
+  <audio id="bgMusic" loop preload="auto" playsinline></audio>
 
   <header class="hero" id="home">
     <div class="hero-inner">
@@ -1587,7 +1762,123 @@
       audio.dataset.track = currentTrack;
       audio.addEventListener("play", syncToggle);
       audio.addEventListener("pause", syncToggle);
-      enableMusic();
+      syncToggle();
+
+      return {
+        play: enableMusic,
+        pause: disableMusic
+      };
+    }
+
+    function initBootSequence(musicController) {
+      const overlay = document.getElementById("bootOverlay");
+      const screen = document.getElementById("bootScreen");
+      const enterButton = document.getElementById("bootEnter");
+      const lineDelays = [48, 38, 34, 28, 22, 18];
+      const introLines = [
+        { text: "[boot] launching mother_day_memory.exe", className: "" },
+        { text: "[scan] locating earliest backup...", className: "" },
+        { text: "[load] mounting heart://supermother/archive", className: "" },
+        { text: "[exec] python ./memories/render_first_impression.py", className: "" },
+        { text: "[print] Guess who I am", className: "" },
+        { text: "", className: "" }
+      ];
+      const asciiArt = [
+        "h253hhMMMHGGGHGS#######G5r:,..       ..,:i5S9999999999",
+        "H2233hhMMHGGHHGSSSS##Shr::,.             .:AH#9###99B9",
+        "S3A253hhMHHHMHGGGGGGS3i::::,.             .,sMS#####SS",
+        "SMAA553hhMHMhh3553335i;;:;;;;;:,,.....  ..,,,;AMhhhhhh",
+        "SGAXAAAA22252AAAAA22r;rr2553h32Xsrii;:::;;;:,.:A335333",
+        "SG5rrrsssssXXXXAAAAs;X2MS#99#SSSSSGM32XXsXr:...r225522",
+        "SG3iiiiirrrssssXXXs:AHG##9BBB&&&BB9##GMh32s;...iAAAAA5",
+        "#MXr;;;iirssXXXXAAX5HHHHGS9BBBBB99##SHMh52s;,.;A2222h9",
+        "#5AsirX2253hMMHHGSS#GMMHHMHSS##SSSGGHM35AXi;:;H##GHMG9",
+        "MA5MHMHGSGS##99BB&9B9SMrXHGGGM333333hh5AXri;;G&&&B##S#",
+        "5A3HGGGS###99BBBBB9BBB#HH9BB#HMh3hh322552si;2B&&&&&&&&",
+        "2AhGGGG###99B#H35M#9B&B&&&&&BB#hrr25353h2r;sH&&&&&&&&&",
+        "22hHHHGS##9G3Asss3S#9BB9S#9#S9B9SS#SGHM3ArrrG&&&&&BB&B",
+        "22hMMHGS##3sirrss2GS##99SSHMH9BBB9#SGM32iiAG&&&B&&B&&&",
+        "A5MhMHGSS5ii;irrrs3GSSHhhHGS#999#SGMh52XXM#&BBBBB&&B&&",
+        "A5MhMHHHhr;;;iiiisA5GSM2AsXMSSSGHh352Xr:X#999BBBBBB&&B",
+        "X5h3253h2;;,,:;iisArhGSHHhhHHHM35AXsr;,,;3S###999BBBBB",
+        "ssriiirss:,,,,,;isAr5MhMHHh35AXsri::,::;;ihGGSS#9#9BBB",
+        "Xsiriirri;,.. .iisAssAXi;::,,..,,:;iiiri;ir3HHGSS##99B",
+        "XAX53MhXii;,,..,;A2AAXsr;:,,,:;irXAsrrsr;;;rhHGSS##99B",
+        "AA2MH5srAi:;:::::iri;;;iiiissrirrrrsrrXs;:::rMGSS##99B",
+        "AAAhMi,,;A;:,:ir;:::,:iiiirXsriiirrssrsrii;:;3SGSSSBBB",
+        "A5hGhXi,,s:,:;iiii;::;;irri;iiirsssrriiiiii;r53hMHhMSB",
+        "AA23223;isi;:;;;irrrirsii;iirrssssr;::::;iirr2533#9SHG",
+        "225HGGSh53M3i:,::;iisXs;::;rrrrri:,:;ii;;;;;;s2GB#hHHH",
+        "525GGSSM5MHHhX::;,,.:;;;;;,:;,:,,:iiiiii:,,;iir2SHHS5h",
+        "52hGGSh35hMHHhA;:;:,..,,,.,::,..,,,,,::::;irrA2A22hh3M",
+        "2AhGSS3HM5MHMh5irAi,,,,,. ;r;::;;ii;iiiirrriisA25A23M#",
+        "2A3hMSSGH3MMMh3shHA::,,,,,,;rrrrirrrrrXsii;s25533hS#BB",
+        "AX5hhH9BS3hMhhhAh#Gr;;;;:::,;ii;;ii;;;;:::iAhMGS#9BBBB",
+        "sr255hh32A5553325S2i::;:;;rA352Xi;:::,..,,s2hMGS##B9BB",
+        "sXsrsrrrsXA2525hH3;;:iXXXAMSGGHHM32X:.,,;r23MGSS#9999B",
+        ";;:,:;ssXX3HHHHH3i:;rhHGSGS##GHh3Ar:,:iX2hHHG##9#9BBBB",
+        ",,,,,,i::ihHGSSGs;;;sMGS##SGGH3Ar::;;AMHGSS##9B9B99B9B",
+        ",,,,,,;::rHGSSSHi;;i2MHSSSSGMArir;iAMSS#99B9BBB&BB9BB9",
+        ",,,,,,,::rMHHGGHr;;r33MMHMMh2iir2hG9BBBBBBBBBBBBBBBB9B",
+        ",,,,,,::;i5hhMMM5;;;;A35h2h5iiXhGBBB&&B&B&BB&BBB9B99B9"
+      ];
+
+      function wait(ms) {
+        return new Promise((resolve) => window.setTimeout(resolve, ms));
+      }
+
+      async function typeLine(text, className, delay) {
+        const line = document.createElement("div");
+        line.className = `boot-line${className ? ` ${className}` : ""}`;
+        screen.appendChild(line);
+
+        if (!text) {
+          line.innerHTML = "&nbsp;";
+          screen.scrollTop = screen.scrollHeight;
+          return;
+        }
+
+        for (let i = 0; i < text.length; i += 1) {
+          line.textContent += text[i];
+          screen.scrollTop = screen.scrollHeight;
+          await wait(delay);
+        }
+      }
+
+      async function runBoot() {
+        for (let i = 0; i < introLines.length; i += 1) {
+          const line = introLines[i];
+          await typeLine(`${i === 3 ? "> " : ""}${line.text}`, line.className, lineDelays[Math.min(i, lineDelays.length - 1)]);
+          await wait(120);
+        }
+
+        await typeLine('[stdout] print(ascii("tuantuan"))', "", 28);
+        await wait(220);
+
+        for (const artLine of asciiArt) {
+          await typeLine(artLine, "art", 6);
+        }
+
+        await wait(260);
+        await typeLine("$ ready_to_enter", "boot-prompt", 20);
+
+        const cursor = document.createElement("span");
+        cursor.className = "boot-cursor";
+        screen.appendChild(cursor);
+        screen.scrollTop = screen.scrollHeight;
+
+        await wait(520);
+        enterButton.classList.add("ready");
+      }
+
+      enterButton.addEventListener("click", async () => {
+        await musicController.play();
+        overlay.classList.add("hidden");
+        overlay.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("booting");
+      });
+
+      runBoot();
     }
 
     initTimeline();
@@ -1599,7 +1890,8 @@
     initGenerator();
     // initQRCode();
     initParallax();
-    initBackgroundMusic();
+    const musicController = initBackgroundMusic();
+    initBootSequence(musicController);
   </script>
 </body>
 </html>
