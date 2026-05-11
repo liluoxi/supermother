@@ -896,16 +896,29 @@
       pointer-events: none;
     }
 
+    .boot-stage {
+      position: relative;
+      width: min(920px, 100%);
+      display: grid;
+      place-items: center;
+      perspective: 1800px;
+    }
+
     .boot-shell {
       width: min(920px, 100%);
-      min-height: min(78vh, 760px);
+      height: min(78vh, 760px);
+      max-height: min(78vh, 760px);
       border-radius: 24px;
       overflow: hidden;
       background: rgba(2, 7, 3, 0.96);
       border: 1px solid rgba(132, 255, 162, 0.18);
       box-shadow: 0 30px 80px rgba(0, 0, 0, 0.42);
       display: grid;
-      grid-template-rows: auto 1fr auto;
+      grid-template-rows: auto 1fr;
+      position: relative;
+      z-index: 1;
+      min-height: 0;
+      transform-style: preserve-3d;
     }
 
     .boot-topbar {
@@ -946,10 +959,14 @@
     }
 
     .boot-screen {
+      min-height: 0;
+      height: 100%;
       padding: 24px 24px 8px;
       font-family: "Consolas", "Courier New", monospace;
       color: #89ff97;
       overflow: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
       line-height: 1.62;
       white-space: pre-wrap;
       word-break: break-word;
@@ -985,34 +1002,236 @@
       animation: blinkCursor 0.95s steps(1) infinite;
     }
 
-    .boot-actions {
-      padding: 0px 24px calc(20px + env(safe-area-inset-bottom, 0px));
-      display: flex;
-      justify-content: center;
+    .boot-line.is-note {
+      color: #d6ffd9;
     }
 
-    .boot-enter {
-      padding: 14px 28px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, rgba(146, 255, 160, 0.18), rgba(255, 255, 255, 0.1));
-      border: 1px solid rgba(146, 255, 160, 0.42);
-      color: #ebffed;
-      letter-spacing: 0.08em;
+    .boot-bouquet {
+      --float-x: 0px;
+      --float-y: 0px;
+      position: absolute;
+      left: 50%;
+      top: calc(100% - 110px);
+      width: 210px;
+      height: 320px;
+      padding: 0;
+      background: transparent;
+      transform:
+        translate3d(calc(-50% + var(--float-x)), var(--float-y), 0)
+        rotateX(16deg)
+        rotateZ(-4deg)
+        scale(0.7);
+      transform-origin: center bottom;
       opacity: 0;
-      transform: translateY(12px);
       pointer-events: none;
-      transition: opacity 0.8s ease, transform 0.8s ease, box-shadow 0.25s ease;
-      box-shadow: 0 0 0 rgba(146, 255, 160, 0);
+      filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.28));
+      transition:
+        opacity 1s ease,
+        transform 3.8s cubic-bezier(0.2, 0.8, 0.18, 1),
+        filter 0.25s ease;
+      z-index: 3;
     }
 
-    .boot-enter.ready {
+    .boot-bouquet.rising {
       opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
+      --float-y: -24px;
     }
 
-    .boot-enter:hover {
-      box-shadow: 0 12px 28px rgba(146, 255, 160, 0.18);
+    .boot-bouquet.floating {
+      --float-y: -250px;
+      transform:
+        translate3d(calc(-50% + var(--float-x)), var(--float-y), 90px)
+        rotateX(10deg)
+        rotateZ(-2deg)
+        scale(1.02);
+    }
+
+    .boot-bouquet.ready {
+      pointer-events: auto;
+      cursor: pointer;
+      animation: bouquetSway 4.6s ease-in-out infinite;
+    }
+
+    .boot-bouquet.ready:hover {
+      filter: drop-shadow(0 20px 30px rgba(255, 84, 118, 0.28));
+    }
+
+    .bouquet-core {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+    }
+
+    .rose {
+      position: absolute;
+      width: 78px;
+      height: 78px;
+      transform-style: preserve-3d;
+    }
+
+    .rose::before,
+    .rose::after,
+    .rose-bloom,
+    .rose-bloom::before,
+    .rose-bloom::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 58% 42% 54% 46%;
+      background: radial-gradient(circle at 35% 35%, #ffd0dc 0%, #ff7a96 32%, #d82052 72%, #89112f 100%);
+      box-shadow: inset -10px -10px 16px rgba(111, 0, 29, 0.28);
+    }
+
+    .rose::before {
+      transform: rotate(32deg) translateZ(10px) scale(0.88);
+    }
+
+    .rose::after {
+      transform: rotate(-28deg) translateZ(18px) scale(0.8);
+    }
+
+    .rose-bloom {
+      transform: rotate(8deg) translateZ(30px) scale(0.72);
+    }
+
+    .rose-bloom::before {
+      transform: rotate(58deg) translateZ(-4px) scale(0.75);
+    }
+
+    .rose-bloom::after {
+      transform: rotate(-54deg) translateZ(-6px) scale(0.68);
+    }
+
+    .rose.center {
+      left: 66px;
+      top: 14px;
+    }
+
+    .rose.left {
+      left: 28px;
+      top: 46px;
+      transform: scale(0.92) rotate(-10deg);
+    }
+
+    .rose.right {
+      left: 108px;
+      top: 44px;
+      transform: scale(0.94) rotate(12deg);
+    }
+
+    .rose.low-left {
+      left: 48px;
+      top: 90px;
+      transform: scale(0.84) rotate(-18deg);
+    }
+
+    .rose.low-right {
+      left: 96px;
+      top: 94px;
+      transform: scale(0.82) rotate(20deg);
+    }
+
+    .stem {
+      position: absolute;
+      width: 8px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #5ca95a 0%, #245d22 100%);
+      box-shadow: inset -2px 0 3px rgba(8, 48, 10, 0.3);
+      transform-origin: top center;
+    }
+
+    .stem.s1 {
+      left: 97px;
+      top: 78px;
+      height: 174px;
+      transform: rotate(2deg);
+    }
+
+    .stem.s2 {
+      left: 72px;
+      top: 102px;
+      height: 148px;
+      transform: rotate(12deg);
+    }
+
+    .stem.s3 {
+      left: 125px;
+      top: 102px;
+      height: 148px;
+      transform: rotate(-13deg);
+    }
+
+    .leaf {
+      position: absolute;
+      width: 50px;
+      height: 24px;
+      border-radius: 0 100% 0 100%;
+      background: linear-gradient(135deg, #7cd87f 0%, #2f7b33 100%);
+      box-shadow: inset -3px -3px 6px rgba(25, 74, 27, 0.24);
+    }
+
+    .leaf.l1 {
+      left: 104px;
+      top: 150px;
+      transform: rotate(22deg);
+    }
+
+    .leaf.l2 {
+      left: 44px;
+      top: 172px;
+      transform: rotate(-166deg);
+    }
+
+    .leaf.l3 {
+      left: 110px;
+      top: 198px;
+      transform: rotate(6deg) scale(0.94);
+    }
+
+    .wrap {
+      position: absolute;
+      left: 28px;
+      top: 126px;
+      width: 154px;
+      height: 152px;
+      background:
+        linear-gradient(135deg, rgba(255, 245, 226, 0.95), rgba(241, 210, 186, 0.9)),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 55%);
+      clip-path: polygon(8% 8%, 50% 30%, 92% 8%, 76% 100%, 24% 100%);
+      border: 1px solid rgba(255, 250, 242, 0.72);
+      box-shadow: 0 12px 20px rgba(34, 14, 6, 0.12);
+    }
+
+    .ribbon {
+      position: absolute;
+      left: 82px;
+      top: 214px;
+      width: 46px;
+      height: 46px;
+      background: radial-gradient(circle at 35% 35%, #ffe4ec 0%, #ff7f9d 42%, #cc214f 100%);
+      clip-path: polygon(50% 0%, 68% 20%, 100% 16%, 80% 50%, 100% 84%, 66% 80%, 50% 100%, 34% 80%, 0% 84%, 20% 50%, 0% 16%, 32% 20%);
+      box-shadow: 0 6px 16px rgba(129, 17, 48, 0.26);
+    }
+
+    .ribbon::before,
+    .ribbon::after {
+      content: "";
+      position: absolute;
+      top: 28px;
+      width: 14px;
+      height: 46px;
+      background: linear-gradient(180deg, #ff9ab1 0%, #b81944 100%);
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    }
+
+    .ribbon::before {
+      left: 4px;
+      transform: rotate(8deg);
+    }
+
+    .ribbon::after {
+      right: 4px;
+      transform: rotate(-8deg);
     }
 
     .reveal {
@@ -1069,6 +1288,27 @@
       }
     }
 
+    @keyframes bouquetSway {
+      0%,
+      100% {
+        transform:
+          translate3d(calc(-50% + var(--float-x)), var(--float-y), 90px)
+          rotateX(10deg)
+          rotateZ(-2deg)
+          rotateY(-6deg)
+          scale(1.02);
+      }
+
+      50% {
+        transform:
+          translate3d(calc(-50% + var(--float-x)), calc(var(--float-y) - 8px), 105px)
+          rotateX(8deg)
+          rotateZ(2deg)
+          rotateY(7deg)
+          scale(1.04);
+      }
+    }
+
     @media (max-width: 980px) {
       .story-banner,
       .timeline-wrap,
@@ -1088,12 +1328,26 @@
     }
 
     @media (max-width: 760px) {
+      .boot-shell {
+        height: min(82dvh, 720px);
+        max-height: min(82dvh, 720px);
+      }
+
       .boot-screen {
         padding: 10px 16px 8px;
       }
 
       .boot-line.art {
         font-size: 12px;
+      }
+
+      .boot-bouquet {
+        width: 184px;
+        height: 286px;
+      }
+
+      .boot-bouquet.floating {
+        --float-y: -206px;
       }
 
       .shell {
@@ -1137,17 +1391,33 @@
 </head>
 <body class="booting">
   <div class="boot-overlay" id="bootOverlay" aria-hidden="false">
-    <div class="boot-shell">
-      <div class="boot-topbar">
-        <span class="boot-dot"></span>
-        <span class="boot-dot"></span>
-        <span class="boot-dot"></span>
-        <span class="boot-title">memory-cli.exe</span>
+    <div class="boot-stage">
+      <div class="boot-shell">
+        <div class="boot-topbar">
+          <span class="boot-dot"></span>
+          <span class="boot-dot"></span>
+          <span class="boot-dot"></span>
+          <span class="boot-title">memory-cli.exe</span>
+        </div>
+        <div class="boot-screen" id="bootScreen"></div>
       </div>
-      <div class="boot-screen" id="bootScreen"></div>
-      <div class="boot-actions">
-        <button class="boot-enter" id="bootEnter" type="button">Dear Mom</button>
-      </div>
+      <button class="boot-bouquet" id="bootBouquet" type="button" aria-label="Open the card">
+        <span class="bouquet-core" aria-hidden="true">
+          <span class="rose center"><span class="rose-bloom"></span></span>
+          <span class="rose left"><span class="rose-bloom"></span></span>
+          <span class="rose right"><span class="rose-bloom"></span></span>
+          <span class="rose low-left"><span class="rose-bloom"></span></span>
+          <span class="rose low-right"><span class="rose-bloom"></span></span>
+          <span class="stem s1"></span>
+          <span class="stem s2"></span>
+          <span class="stem s3"></span>
+          <span class="leaf l1"></span>
+          <span class="leaf l2"></span>
+          <span class="leaf l3"></span>
+          <span class="wrap"></span>
+          <span class="ribbon"></span>
+        </span>
+      </button>
     </div>
   </div>
 
@@ -1773,7 +2043,7 @@
     function initBootSequence(musicController) {
       const overlay = document.getElementById("bootOverlay");
       const screen = document.getElementById("bootScreen");
-      const enterButton = document.getElementById("bootEnter");
+      const bouquet = document.getElementById("bootBouquet");
       const lineDelays = [48, 38, 34, 28, 22, 18];
       const introLines = [
         { text: "[boot] launching mother_day_memory.exe", className: "" },
@@ -1822,9 +2092,39 @@
         ",,,,,,,::rMHHGGHr;;r33MMHMMh2iir2hG9BBBBBBBBBBBBBBBB9B",
         ",,,,,,::;i5hhMMM5;;;;A35h2h5iiXhGBBB&&B&B&BB&BBB9B99B9"
       ];
+      const roseAscii = [
+        "              .-.",
+        "           .-'   `-.",
+        "          /  .- -.  \\",
+        "         |  /  _  \\  |",
+        "         |  \\ (_) /  |",
+        "          \\  `---'  /",
+        "       .---`-.___.-'---.",
+        "      /   .--.   .--.   \\",
+        "     /   /    \\ /    \\   \\",
+        "     \\   \\    / \\    /   /",
+        "      `--.`--'   `--'.--'",
+        "           \\\\   //",
+        "            \\\\ //",
+        "             \\V/",
+        "             |||",
+        "            |||||",
+        "          ___|||___",
+        "        .`  / | \\  `.",
+        "       /___/  |  \\___\\\\"
+      ];
+      let hasEntered = false;
 
       function wait(ms) {
         return new Promise((resolve) => window.setTimeout(resolve, ms));
+      }
+
+      function pinBootScreen() {
+        screen.scrollTop = screen.scrollHeight;
+
+        window.requestAnimationFrame(() => {
+          screen.scrollTop = screen.scrollHeight;
+        });
       }
 
       async function typeLine(text, className, delay) {
@@ -1834,15 +2134,30 @@
 
         if (!text) {
           line.innerHTML = "&nbsp;";
-          screen.scrollTop = screen.scrollHeight;
+          pinBootScreen();
           return;
         }
 
         for (let i = 0; i < text.length; i += 1) {
           line.textContent += text[i];
-          screen.scrollTop = screen.scrollHeight;
+          pinBootScreen();
           await wait(delay);
         }
+      }
+
+      async function enterExperience() {
+        if (hasEntered) {
+          return;
+        }
+
+        hasEntered = true;
+        await musicController.play();
+        overlay.classList.add("hidden");
+        overlay.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("booting");
+        window.setTimeout(() => {
+          document.getElementById("home")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 260);
       }
 
       async function runBoot() {
@@ -1859,24 +2174,34 @@
           await typeLine(artLine, "art", 6);
         }
 
+        await wait(320);
+        await typeLine("", "", 0);
+        await typeLine('[stdout] print(bouquet("rose_for_mom"))', "", 26);
         await wait(260);
-        await typeLine("$ ready_to_enter", "boot-prompt", 20);
+
+        for (const artLine of roseAscii) {
+          await typeLine(artLine, "art", 18);
+          await wait(40);
+        }
+
+        await wait(420);
+        bouquet.classList.add("rising");
+        await typeLine("[render] bouquet materializing above cli...", "is-note", 18);
+        await wait(900);
+        bouquet.classList.add("floating");
+        await wait(3000);
+        await typeLine("[input] click the roses to open the card", "boot-prompt", 18);
 
         const cursor = document.createElement("span");
         cursor.className = "boot-cursor";
         screen.appendChild(cursor);
-        screen.scrollTop = screen.scrollHeight;
+        pinBootScreen();
 
-        await wait(520);
-        enterButton.classList.add("ready");
+        await wait(260);
+        bouquet.classList.add("ready");
       }
 
-      enterButton.addEventListener("click", async () => {
-        await musicController.play();
-        overlay.classList.add("hidden");
-        overlay.setAttribute("aria-hidden", "true");
-        document.body.classList.remove("booting");
-      });
+      bouquet.addEventListener("click", enterExperience);
 
       runBoot();
     }
