@@ -958,6 +958,30 @@
       text-transform: uppercase;
     }
 
+    .boot-audio-toggle {
+      margin-left: 12px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(132, 255, 162, 0.08);
+      border: 1px solid rgba(132, 255, 162, 0.24);
+      color: #b7ffbf;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease, transform 0.22s ease;
+    }
+
+    .boot-audio-toggle:hover {
+      transform: translateY(-1px);
+      background: rgba(132, 255, 162, 0.14);
+    }
+
+    .boot-audio-toggle.is-off {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(132, 255, 162, 0.12);
+      color: rgba(183, 255, 191, 0.6);
+    }
+
     .boot-screen {
       min-height: 0;
       height: 100%;
@@ -1398,6 +1422,7 @@
           <span class="boot-dot"></span>
           <span class="boot-dot"></span>
           <span class="boot-title">memory-cli.exe</span>
+          <button class="boot-audio-toggle" id="bootAudioToggle" type="button" aria-label="Mute CLI audio" title="Mute CLI audio">KEY SOUND: ON</button>
         </div>
         <div class="boot-screen" id="bootScreen"></div>
       </div>
@@ -1424,6 +1449,7 @@
   <button class="music-toggle is-off" id="musicToggle" type="button" aria-label="Play background music" title="Play background music">
     &#9834;
   </button>
+  <audio id="bootKeyboardAudio" loop preload="auto" playsinline src="./keyboard.mp3"></audio>
   <audio id="bgMusic" loop preload="auto" playsinline></audio>
 
   <header class="hero" id="home">
@@ -2040,7 +2066,93 @@
       };
     }
 
-    function initBootSequence(musicController) {
+    function initBootKeyboardAudio() {
+      const audio = document.getElementById("bootKeyboardAudio");
+      const toggle = document.getElementById("bootAudioToggle");
+      let isEnabled = true;
+      let isStopped = false;
+
+      audio.volume = 0.42;
+
+      function syncToggle() {
+        toggle.classList.toggle("is-off", !isEnabled || isStopped);
+        toggle.textContent = isEnabled && !isStopped ? "KEY SOUND: ON" : "KEY SOUND: OFF";
+        toggle.setAttribute("aria-label", isEnabled && !isStopped ? "Mute CLI audio" : "Unmute CLI audio");
+        toggle.setAttribute("title", isEnabled && !isStopped ? "Mute CLI audio" : "Unmute CLI audio");
+      }
+
+      async function attemptPlay() {
+        if (!isEnabled || isStopped) {
+          return false;
+        }
+
+        try {
+          audio.currentTime = 0;
+          await audio.play();
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+
+      async function enable() {
+        if (isStopped) {
+          return false;
+        }
+
+        isEnabled = true;
+        const started = await attemptPlay();
+        syncToggle();
+        return started;
+      }
+
+      function disable() {
+        isEnabled = false;
+        audio.pause();
+        syncToggle();
+      }
+
+      function stop() {
+        isStopped = true;
+        isEnabled = false;
+        audio.pause();
+        audio.currentTime = 0;
+        syncToggle();
+      }
+
+      toggle.addEventListener("click", async () => {
+        if (isEnabled && !audio.paused) {
+          disable();
+          return;
+        }
+
+        isEnabled = true;
+        await attemptPlay();
+        syncToggle();
+      });
+
+      const retryAutoPlay = async () => {
+        if (audio.paused && isEnabled && !isStopped) {
+          await attemptPlay();
+          syncToggle();
+        }
+      };
+
+      window.addEventListener("pointerdown", retryAutoPlay, { once: true });
+      window.addEventListener("keydown", retryAutoPlay, { once: true });
+      window.addEventListener("touchstart", retryAutoPlay, { once: true, passive: true });
+
+      syncToggle();
+      enable();
+
+      return {
+        play: enable,
+        pause: disable,
+        stop
+      };
+    }
+
+    function initBootSequence(musicController, bootAudioController) {
       const overlay = document.getElementById("bootOverlay");
       const screen = document.getElementById("bootScreen");
       const bouquet = document.getElementById("bootBouquet");
@@ -2151,6 +2263,7 @@
         }
 
         hasEntered = true;
+        bootAudioController.stop();
         await musicController.play();
         overlay.classList.add("hidden");
         overlay.setAttribute("aria-hidden", "true");
@@ -2215,8 +2328,9 @@
     initGenerator();
     // initQRCode();
     initParallax();
+    const bootAudioController = initBootKeyboardAudio();
     const musicController = initBackgroundMusic();
-    initBootSequence(musicController);
+    initBootSequence(musicController, bootAudioController);
   </script>
 </body>
 </html>
