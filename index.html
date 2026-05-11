@@ -1080,6 +1080,192 @@
       filter: drop-shadow(0 20px 30px rgba(255, 84, 118, 0.28));
     }
 
+    body.easter-active {
+      overflow: hidden;
+    }
+
+    body.easter-source-hidden > :not(.easter-overlay):not(script) {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transition: opacity 0.15s linear, visibility 0.15s linear;
+    }
+
+    .easter-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at center, rgba(255, 184, 203, 0.06), rgba(8, 4, 22, 0.94) 42%, rgba(0, 0, 0, 0.995) 100%);
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    .easter-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .easter-tiles {
+      position: absolute;
+      inset: 0;
+    }
+
+    .easter-tile {
+      position: fixed;
+      background-repeat: no-repeat;
+      background-size: var(--bgw) var(--bgh);
+      background-position: var(--bgx) var(--bgy);
+      left: var(--x);
+      top: var(--y);
+      width: var(--w);
+      height: var(--h);
+      animation: easterSuck 1.9s cubic-bezier(0.18, 0.8, 0.24, 1) forwards;
+      animation-delay: var(--delay, 0ms);
+      will-change: transform, opacity, filter;
+    }
+
+    .easter-void {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: clamp(108px, 15vw, 180px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background:
+        radial-gradient(circle at 50% 46%, rgba(20, 12, 38, 0.18) 0 18%, rgba(0, 0, 0, 0.94) 36%, #000 66%);
+      box-shadow:
+        0 0 0 16px rgba(95, 50, 255, 0.08),
+        0 0 52px rgba(98, 43, 255, 0.32),
+        0 0 110px rgba(255, 120, 182, 0.16);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .easter-overlay.active .easter-void {
+      opacity: 1;
+      animation: blackHolePulse 1.8s ease-in-out infinite;
+    }
+
+    .easter-void::before,
+    .easter-void::after {
+      content: "";
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 176, 211, 0.28);
+      border-left-color: transparent;
+      border-right-color: rgba(132, 187, 255, 0.44);
+      filter: blur(0.2px);
+    }
+
+    .easter-void::before {
+      animation: blackHoleRing 2s linear infinite;
+    }
+
+    .easter-void::after {
+      inset: -26px;
+      border-width: 3px;
+      border-top-color: rgba(255, 255, 255, 0.14);
+      border-bottom-color: transparent;
+      animation: blackHoleRing 3.2s linear infinite reverse;
+    }
+
+    .easter-burst {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0.2);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.96) 0%, rgba(255, 207, 226, 0.92) 32%, rgba(255, 132, 182, 0.48) 58%, rgba(255, 132, 182, 0) 78%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .easter-overlay.burst .easter-burst {
+      animation: easterBurst 0.85s ease-out forwards;
+    }
+
+    .easter-message {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      width: min(860px, calc(100% - 34px));
+      transform: translate(-50%, -50%) scale(0.78);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .easter-overlay.burst .easter-message {
+      animation: bubbleMessageIn 0.9s cubic-bezier(0.2, 0.9, 0.2, 1) 0.18s forwards;
+    }
+
+    .easter-char {
+      min-width: clamp(52px, 8vw, 80px);
+      min-height: clamp(52px, 8vw, 80px);
+      padding: 10px 12px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #fff;
+      font-family: "Arial Rounded MT Bold", "Trebuchet MS", "Dancing Script", sans-serif;
+      font-size: clamp(1.9rem, 4.1vw, 3.15rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border: 3px solid rgba(255, 255, 255, 0.78);
+      background:
+        radial-gradient(circle at 28% 24%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.54) 16%, rgba(255, 255, 255, 0) 22%),
+        radial-gradient(circle at 52% 120%, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 42%),
+        linear-gradient(180deg, color-mix(in srgb, var(--bubble) 82%, white 18%) 0%, var(--bubble) 48%, var(--bubble-deep) 100%);
+      box-shadow:
+        inset 0 5px 10px rgba(255, 255, 255, 0.42),
+        inset 0 -8px 12px rgba(122, 12, 64, 0.18),
+        0 4px 0 rgba(255, 255, 255, 0.34),
+        0 10px 0 color-mix(in srgb, var(--bubble-deep) 72%, #8f2452 28%),
+        0 18px 28px rgba(32, 8, 53, 0.24);
+      text-shadow:
+        0 2px 0 rgba(255, 255, 255, 0.24),
+        0 4px 0 rgba(170, 33, 88, 0.34),
+        0 0 14px rgba(255, 255, 255, 0.3);
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+      animation: bubbleFloat 3.4s ease-in-out infinite;
+      animation-delay: var(--float-delay, 0s);
+    }
+
+    .easter-char.space {
+      min-width: 26px;
+      min-height: 26px;
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .easter-caption {
+      width: 100%;
+      margin-top: 8px;
+      text-align: center;
+      color: rgba(255, 242, 247, 0.96);
+      font-size: clamp(1rem, 2vw, 1.24rem);
+      letter-spacing: 0.06em;
+      text-shadow: 0 6px 24px rgba(255, 141, 194, 0.26);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .easter-overlay.burst .easter-caption {
+      animation: fadeUpSoft 0.8s ease 0.45s forwards;
+    }
+
     .bouquet-core {
       position: absolute;
       inset: 0;
@@ -1330,6 +1516,95 @@
           rotateZ(2deg)
           rotateY(7deg)
           scale(1.04);
+      }
+    }
+
+    @keyframes easterSuck {
+      0% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+        filter: blur(0px);
+      }
+
+      72% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+        transform:
+          translate3d(var(--tx), var(--ty), 0)
+          scale(0.04)
+          rotate(var(--rot));
+        filter: blur(12px);
+      }
+    }
+
+    @keyframes blackHolePulse {
+      0%,
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      50% {
+        transform: translate(-50%, -50%) scale(1.08);
+      }
+    }
+
+    @keyframes blackHoleRing {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes easterBurst {
+      0% {
+        opacity: 0.15;
+        transform: translate(-50%, -50%) scale(0.2);
+      }
+
+      45% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(26);
+      }
+    }
+
+    @keyframes bubbleMessageIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.78);
+      }
+
+      68% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.08);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    @keyframes bubbleFloat {
+      0%,
+      100% {
+        transform: translateY(0) rotate(-3deg);
+      }
+
+      50% {
+        transform: translateY(-10px) rotate(3deg);
+      }
+    }
+
+    @keyframes fadeUpSoft {
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
 
@@ -1759,12 +2034,184 @@
     </ul>
   </nav> -->
 
-  <script>
-    console.log("祝世界上最棒的妈妈节日快乐！");
+  <div class="easter-overlay" id="easterOverlay" aria-hidden="true">
+    <div class="easter-tiles" id="easterTiles"></div>
+    <div class="easter-void" aria-hidden="true"></div>
+    <div class="easter-burst" aria-hidden="true"></div>
+    <div class="easter-message" id="easterMessage" aria-live="polite"></div>
+  </div>
 
+  <script>
     const WISH_KEY = "supermother-mom-wish";
     const MEMORY_KEY = "supermother-memory-text";
     let generatedImageData = "";
+
+    function initConsoleEasterEgg() {
+      const overlay = document.getElementById("easterOverlay");
+      const tiles = document.getElementById("easterTiles");
+      const message = document.getElementById("easterMessage");
+      const bubbleChars = "\u8001\u5a46\u6211\u548c\u56e2\u56e2\u6c38\u8fdc\u7231\u4f60";
+      let isRunning = false;
+
+      function renderBubbleMessage() {
+        const bubblePalette = [
+          ["#ff8dad", "#ff5c8a"],
+          ["#ffb16c", "#ff7d4f"],
+          ["#7fd7ff", "#4aa7ff"],
+          ["#ae9bff", "#7f63ff"],
+          ["#7fe1b6", "#38bc88"],
+          ["#ffd56c", "#ffad4d"]
+        ];
+
+        message.innerHTML = "";
+
+        bubbleChars.split("").forEach((char, index) => {
+          const bubble = document.createElement("span");
+          const [light, deep] = bubblePalette[index % bubblePalette.length];
+          bubble.className = "easter-char";
+          bubble.textContent = char;
+          bubble.style.setProperty("--bubble", light);
+          bubble.style.setProperty("--bubble-deep", deep);
+          bubble.style.setProperty("--float-delay", `${(index % 6) * 0.18}s`);
+          message.appendChild(bubble);
+        });
+
+        const caption = document.createElement("div");
+        caption.className = "easter-caption";
+        caption.textContent = "\u6211\u548c\u56e2\u56e2\uff0c\u6c38\u8fdc\u7ad9\u5728\u4f60\u8fd9\u8fb9\u3002";
+        message.appendChild(caption);
+      }
+
+      function logInvitation() {
+        const eggMessage = [
+          "\ud83d\udc40 \u5b9d\u5b9d\uff0c\u4f60\u8fd8\u662f\u81ea\u5df1\u5077\u5077\u6765\u770b\u5566\uff5e",
+          "",
+          "\ud83c\udf89 \u9996\u5148\uff0c\u8981\u795d\u4f60\u8fd9\u4f4d\u8d85\u7ea7\u5988\u5988\u8282\u65e5\u5feb\u4e50\uff01\uff01\uff01\uff01",
+          "\ud83e\udef6 \u4e5f\u8bb8\u8ddd\u79bb\u90a3\u5929\u5df2\u7ecf\u8fc7\u4e86\u597d\u4e45\uff0c\u4f46\u8c22\u8c22\u4f60\u4f9d\u7136\u8bb0\u5f97\u8fd9\u91cc\u8fd8\u85cf\u7740\u5c0f\u5f69\u86cb\u3002",
+          "",
+          "\ud83d\udc8c \u8877\u5fc3\u795d\u613f\u6211\u7684\u8001\u5a46\uff1a",
+          "\u65e9\u65e5\u6446\u8131\u6708\u5b50\u75c5\u7684\u56f0\u6270\uff0c\u8eab\u4f53\u68d2\u68d2\u7684\uff0c\u6d3b\u529b\u6ee1\u6ee1\u3002",
+          "",
+          "\ud83e\udd7a \u6bcf\u6b21\u542c\u5230\u4f60\u62cd\u6253\u814b\u7a9d\u7684\u58f0\u97f3\uff0c\u6211\u5fc3\u91cc\u90fd\u4e00\u7d27\uff1b",
+          "\ud83c\udf43 \u6bcf\u5f53\u60f3\u5230\u4f60\u88ab\u98ce\u5439\u5f97\u523a\u9aa8\u96be\u53d7\uff0c\u6211\u4e5f\u7279\u522b\u5fc3\u75bc\u3002",
+          "\u2764\ufe0f \u6211\u4f1a\u4e00\u76f4\u597d\u597d\u7167\u987e\u4f60\uff0c\u966a\u4f60\u4e00\u8d77\u628a\u6bcf\u4e00\u5929\u90fd\u8fc7\u6696\u3002",
+          "",
+          "\u2728 \u5982\u679c\u4f60\u60f3\u6253\u5f00\u6700\u540e\u4e00\u4e2a\u9690\u85cf\u6548\u679c\uff0c",
+          "\u8bf7\u5728\u63a7\u5236\u53f0\u8f93\u5165\uff1aILOVEYOU()"
+        ].join("\n");
+
+        console.log(eggMessage);
+        console.log("%cILOVEYOU()", "color:#ff6f9a;font-size:16px;font-weight:700;padding:6px 0;");
+      }
+
+      function buildFallbackTiles() {
+        const tile = document.createElement("div");
+        tile.className = "easter-tile";
+        tile.style.setProperty("--x", "0px");
+        tile.style.setProperty("--y", "0px");
+        tile.style.setProperty("--w", `${window.innerWidth}px`);
+        tile.style.setProperty("--h", `${window.innerHeight}px`);
+        tile.style.setProperty("--bgw", `${window.innerWidth}px`);
+        tile.style.setProperty("--bgh", `${window.innerHeight}px`);
+        tile.style.setProperty("--bgx", "0px");
+        tile.style.setProperty("--bgy", "0px");
+        tile.style.setProperty("--tx", "0px");
+        tile.style.setProperty("--ty", "0px");
+        tile.style.setProperty("--rot", "0deg");
+        tile.style.background = "linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,240,246,0.8))";
+        tiles.appendChild(tile);
+      }
+
+      function buildTilesFromCanvas(canvas) {
+        const snapshot = canvas.toDataURL("image/png");
+        const tileSize = window.innerWidth < 760 ? 72 : 104;
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        const columns = Math.ceil(window.innerWidth / tileSize);
+        const rows = Math.ceil(window.innerHeight / tileSize);
+
+        tiles.innerHTML = "";
+
+        for (let row = 0; row < rows; row += 1) {
+          for (let col = 0; col < columns; col += 1) {
+            const x = col * tileSize;
+            const y = row * tileSize;
+            const width = Math.min(tileSize, window.innerWidth - x);
+            const height = Math.min(tileSize, window.innerHeight - y);
+            const tile = document.createElement("div");
+            const tileCenterX = x + width / 2;
+            const tileCenterY = y + height / 2;
+            const distance = Math.hypot(tileCenterX - centerX, tileCenterY - centerY);
+
+            tile.className = "easter-tile";
+            tile.style.backgroundImage = `url(${snapshot})`;
+            tile.style.setProperty("--x", `${x}px`);
+            tile.style.setProperty("--y", `${y}px`);
+            tile.style.setProperty("--w", `${width}px`);
+            tile.style.setProperty("--h", `${height}px`);
+            tile.style.setProperty("--bgw", `${window.innerWidth}px`);
+            tile.style.setProperty("--bgh", `${window.innerHeight}px`);
+            tile.style.setProperty("--bgx", `-${x}px`);
+            tile.style.setProperty("--bgy", `-${y}px`);
+            tile.style.setProperty("--tx", `${centerX - tileCenterX}px`);
+            tile.style.setProperty("--ty", `${centerY - tileCenterY}px`);
+            tile.style.setProperty("--rot", `${(Math.random() * 320 - 160).toFixed(1)}deg`);
+            tile.style.setProperty("--delay", `${Math.min(distance * 0.18, 220)}ms`);
+            tiles.appendChild(tile);
+          }
+        }
+      }
+
+      async function captureViewport() {
+        if (typeof html2canvas !== "function") {
+          throw new Error("html2canvas unavailable");
+        }
+
+        return html2canvas(document.body, {
+          backgroundColor: null,
+          useCORS: true,
+          logging: false,
+          width: window.innerWidth,
+          height: window.innerHeight,
+          x: window.scrollX,
+          y: window.scrollY,
+          windowWidth: document.documentElement.clientWidth,
+          windowHeight: window.innerHeight,
+          scrollX: window.scrollX,
+          scrollY: window.scrollY
+        });
+      }
+
+      async function summonLoveBlackHole() {
+        if (isRunning) {
+          return;
+        }
+
+        isRunning = true;
+        renderBubbleMessage();
+
+        try {
+          const canvas = await captureViewport();
+          buildTilesFromCanvas(canvas);
+        } catch (error) {
+          buildFallbackTiles();
+        }
+
+        document.body.classList.add("easter-active");
+        document.body.classList.add("easter-source-hidden");
+        overlay.classList.add("active");
+        overlay.setAttribute("aria-hidden", "false");
+
+        window.setTimeout(() => {
+          overlay.classList.add("burst");
+        }, 2000);
+      }
+
+      window.ILOVEYOU = summonLoveBlackHole;
+      window.summonLoveBlackHole = summonLoveBlackHole;
+      window.loveBlackHole = summonLoveBlackHole;
+      logInvitation();
+    }
 
     function initTimeline() {
       const items = document.querySelectorAll(".timeline-item");
@@ -2333,6 +2780,7 @@
       runBoot();
     }
 
+    initConsoleEasterEgg();
     initTimeline();
     initTabs();
     initReveal();
