@@ -2070,24 +2070,24 @@
       const audio = document.getElementById("bootKeyboardAudio");
       const toggle = document.getElementById("bootAudioToggle");
       let isEnabled = true;
-      let isStopped = false;
+      let typingActive = false;
+      let isFinished = false;
 
       audio.volume = 0.42;
 
       function syncToggle() {
-        toggle.classList.toggle("is-off", !isEnabled || isStopped);
-        toggle.textContent = isEnabled && !isStopped ? "KEY SOUND: ON" : "KEY SOUND: OFF";
-        toggle.setAttribute("aria-label", isEnabled && !isStopped ? "Mute CLI audio" : "Unmute CLI audio");
-        toggle.setAttribute("title", isEnabled && !isStopped ? "Mute CLI audio" : "Unmute CLI audio");
+        toggle.classList.toggle("is-off", !isEnabled || isFinished);
+        toggle.textContent = isEnabled && !isFinished ? "KEY SOUND: ON" : "KEY SOUND: OFF";
+        toggle.setAttribute("aria-label", isEnabled && !isFinished ? "Mute CLI audio" : "Unmute CLI audio");
+        toggle.setAttribute("title", isEnabled && !isFinished ? "Mute CLI audio" : "Unmute CLI audio");
       }
 
       async function attemptPlay() {
-        if (!isEnabled || isStopped) {
+        if (!isEnabled || !typingActive || isFinished) {
           return false;
         }
 
         try {
-          audio.currentTime = 0;
           await audio.play();
           return true;
         } catch (error) {
@@ -2095,8 +2095,19 @@
         }
       }
 
+      async function start() {
+        if (isFinished || typingActive) {
+          return;
+        }
+
+        typingActive = true;
+        audio.currentTime = 0;
+        await attemptPlay();
+        syncToggle();
+      }
+
       async function enable() {
-        if (isStopped) {
+        if (isFinished) {
           return false;
         }
 
@@ -2112,9 +2123,9 @@
         syncToggle();
       }
 
-      function stop() {
-        isStopped = true;
-        isEnabled = false;
+      function finish() {
+        typingActive = false;
+        isFinished = true;
         audio.pause();
         audio.currentTime = 0;
         syncToggle();
@@ -2132,7 +2143,7 @@
       });
 
       const retryAutoPlay = async () => {
-        if (audio.paused && isEnabled && !isStopped) {
+        if (audio.paused && isEnabled && typingActive && !isFinished) {
           await attemptPlay();
           syncToggle();
         }
@@ -2143,12 +2154,12 @@
       window.addEventListener("touchstart", retryAutoPlay, { once: true, passive: true });
 
       syncToggle();
-      enable();
 
       return {
+        start,
         play: enable,
         pause: disable,
-        stop
+        stop: finish
       };
     }
 
@@ -2251,6 +2262,9 @@
         }
 
         for (let i = 0; i < text.length; i += 1) {
+          if (i === 0) {
+            await bootAudioController.start();
+          }
           line.textContent += text[i];
           pinBootScreen();
           await wait(delay);
@@ -2263,7 +2277,6 @@
         }
 
         hasEntered = true;
-        bootAudioController.stop();
         await musicController.play();
         overlay.classList.add("hidden");
         overlay.setAttribute("aria-hidden", "true");
@@ -2304,6 +2317,7 @@
         bouquet.classList.add("floating");
         await wait(3000);
         await typeLine("[input] click the roses to open the card", "boot-prompt", 18);
+        bootAudioController.stop();
 
         const cursor = document.createElement("span");
         cursor.className = "boot-cursor";
